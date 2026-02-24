@@ -1,1 +1,1025 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fary EdTech Shop</title>
+    <meta name="description" content="Toko Fary EdTech menyediakan berbagai aplikasi pendidikan, dan sistem informasi sekolah terbaik.">
+    
+    <meta name="keywords" content="Fary EdTech, aplikasi pendidikan, source code sekolah, aplikasi Google Apps Script, e-commerce pendidikan, sistem absen online, aplikasi kelulusan">
+    
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Fary EdTech">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Fary EdTech Shop - Inovasi Teknologi Pendidikan">
+    <meta property="og:description" content="Katalog produk aplikasi pendidikan dan sistem informasi sekolah.">
+    <meta property="og:image" content="https://via.placeholder.com/600x315.png?text=Fary+EdTech"> 
+    <meta property="og:url" content="https://www.fary-edtech.my.id/">
+
+
+    <link rel="icon" type="image/png" href="./logo.png">
+    
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Outfit', sans-serif; background: radial-gradient(circle at top left, #a78bfa, transparent 50%), radial-gradient(circle at bottom right, #38bdf8, transparent 50%), linear-gradient(120deg, #e0e7ff 0%, #f3e8ff 100%); background-attachment: fixed; color: #1f2937; min-height: 100vh; padding-bottom: 0px; overflow-x: hidden; }
+        /* PERBAIKAN URUTAN POP-UP (Z-INDEX) */
+.offcanvas-backdrop { z-index: 10400 !important; }
+.offcanvas { z-index: 10450 !important; }
+.modal-backdrop { z-index: 10500 !important; }
+.modal { z-index: 10550 !important; }
+.swal2-container { z-index: 10600 !important; }
+
+        /* NAVBAR ATAS DESKTOP */
+        nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.5); height: 75px; padding: 0 5%; position: fixed; top: 0; width: 100%; z-index: 9999; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .nav-logo { display: flex; align-items: center; gap: 10px; cursor:pointer;}
+        .nav-logo img { height: 45px; width: 45px; border-radius: 50%; object-fit: cover; display: none; }
+        .nav-search { flex-grow: 1; max-width: 400px; margin: 0 30px; position: relative; }
+        .nav-search input { width: 100%; padding: 10px 15px 10px 40px; border-radius: 25px; border: 1px solid #ddd; outline: none; font-size: 0.9rem; transition: 0.3s; background: #f8fafc; }
+        .nav-search input:focus { border-color: #4f46e5; box-shadow: 0 0 10px rgba(79, 70, 229, 0.2); background: #fff;}
+        .nav-search i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #64748b; }
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 700; font-size: 0.95rem; transition: 0.3s; cursor: pointer; padding: 5px; }
+        .nav-links a:hover { color: #4f46e5; }
+        
+        .ticker-wrap { width: 100%; overflow: hidden; background-color: #fffbeb; border-bottom: 1px solid #fde68a; height: 32px; line-height: 32px; position: fixed; top: 75px; z-index: 9998; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .ticker-text { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 25s linear infinite; font-size: 0.85rem; color: #b45309; font-weight: 500;}
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        .container-utama { max-width: 1280px; margin: 0 auto; padding: 20px; margin-top: 110px; min-height: 70vh;}
+        .hero { text-align: center; padding: 50px 20px; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255,255,255,0.8); border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 50px; }
+        .hero-img { width: 100%; max-width: 500px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 15px 25px rgba(0,0,0,0.1); }
+        .promo-badge { display: inline-block; background: #ef4444; color: white; padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 0.8rem; margin-bottom: 20px; }
+        .hero h1 { font-size: 1.7rem; margin-bottom: 15px; color: #1e1b4b; font-weight: 700; }
+        
+        .section-title { text-align: center; margin: 50px 0 30px; font-size: 1.8rem; color: #1e1b4b; font-weight: 800; }
+        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; }
+        .card-custom { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s; display: flex; flex-direction: column; border: 1px solid rgba(0,0,0,0.05); }
+        .card-custom:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .card-img-custom { width: 100%; height: 160px; object-fit: contain; background-color: #f8fafc; padding: 10px; }
+        .card-body-custom { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; text-align: center; }
+        .card-title-custom { font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; color: #1e1b4b; line-height: 1.3; }
+        
+        .spa-view { display: none; } .spa-view.active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .admin-panel { background: rgba(255,255,255,0.95); border-radius: 16px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-top: 90px;}
+        .cart-input-readonly { background: #fff !important; cursor: pointer; border-color: #ddd; font-size: 0.95rem; padding: 10px !important;}
+        .offcanvas-end { height: 80vh !important; top: 12vh !important; border-radius: 20px 0 0 20px; border-left: none; box-shadow: -10px 0 30px rgba(0,0,0,0.15); width: 400px; max-width: 90%; z-index: 10500 !important; }
+        
+        .footer-pro { background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%); color: #d1d5db; padding: 60px 0 20px; margin-top: 80px; font-size: 0.9rem; border-top-left-radius: 40px; border-top-right-radius: 40px;}
+        .footer-pro h5 { color: white; font-weight: 800; margin-bottom: 20px; font-size: 1.2rem;}
+        .footer-pro a.quick-link { color: #d1d5db; text-decoration: none; transition: 0.3s; display: block; margin-bottom: 12px; font-size: 1rem;}
+        .footer-pro a.quick-link:hover { color: #38bdf8; padding-left: 5px; }
+        .footer-pro .social-btn { display: inline-flex; align-items: center; background: rgba(255,255,255,0.1); padding: 8px 18px; border-radius: 25px; color: white; margin: 0 10px 10px 0; font-size: 0.9rem; text-decoration: none; transition: 0.3s; border: 1px solid rgba(255,255,255,0.2); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; padding-top: 20px; text-align: center; font-size: 0.85rem; }
+
+        .floating-btn { position: fixed; bottom: 25px; width: 50px; height: 50px; border-radius: 50%; color: white; border: none; font-size: 1.5rem; cursor: pointer; z-index: 9998; box-shadow: 0 5px 15px rgba(0,0,0,0.2); display: flex; justify-content: center; align-items: center; text-decoration: none; transition: 0.3s; }
+        .floating-btn:hover { color: white; transform: translateY(-5px); }
+        #btnTop { left: 20px; background: #1e1b4b; display: none; }
+        #btnWA_floating { right: 20px; background: #25D366; }
+
+        .mobile-bottom-nav { display: none; } /* Default Hidden on Desktop */
+
+        /* ===================================================================
+           TAMPILAN KHUSUS HP (MOBILE UI)
+           =================================================================== */
+        @media screen and (max-width: 991px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 15px; } }
+        @media screen and (max-width: 768px) {
+            body { padding-bottom: 75px; } /* Ruang kosong di bawah untuk Bottom Nav */
+            
+            /* Navbar Atas HP (Hanya Search & Lock) */
+            nav { height: 60px; padding: 0 10px; }
+            .nav-logo span { display: none; } /* Teks logo disembunyikan */
+            .nav-logo img { width: 35px; height: 35px; display: block !important; margin-right: 5px; }
+            .nav-search { display: block; margin: 0 10px; flex-grow: 1; max-width: none; }
+            .nav-search input { padding: 8px 15px 8px 35px; font-size: 0.85rem; }
+            .nav-search i { left: 12px; }
+            
+            .ticker-wrap { top: 60px; height: 26px; line-height: 26px; }
+            .ticker-text { font-size: 0.75rem; animation: ticker 20s linear infinite; }
+            .container-utama { margin-top: 90px; padding: 12px; min-height: auto; }
+            
+            /* Bottom Navigation Bar HP */
+            .mobile-bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; display: flex; justify-content: space-around; align-items: center; padding: 10px 0 8px 0; box-shadow: 0 -4px 15px rgba(0,0,0,0.08); z-index: 9999; border-top-left-radius: 18px; border-top-right-radius: 18px; border-top: 1px solid #f1f5f9; }
+            .bottom-nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #94a3b8; font-size: 0.65rem; font-weight: 600; transition: 0.2s; position: relative;}
+            .bottom-nav-item i { font-size: 1.25rem; margin-bottom: 4px; }
+            .bottom-nav-item.active { color: #4f46e5; }
+            .bottom-nav-item.active i { transform: translateY(-3px); color: #4f46e5; }
+            
+            /* Angkat Posisi Tombol Melayang agar tidak tertutup menu bawah */
+            .floating-btn { bottom: 90px; width: 45px; height: 45px; font-size: 1.3rem; }
+            #btnTop { left: 15px; } #btnWA_floating { right: 15px; }
+
+            .hero { padding: 30px 15px; margin-bottom: 20px; border-radius: 16px; }
+            .hero h1 { font-size: 1.2rem; margin-bottom: 10px; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .card-custom { border-radius: 12px; border: 1px solid #e2e8f0; }
+            .card-img-custom { height: 110px; padding: 5px; }
+            .card-body-custom { padding: 10px; }
+            .card-title-custom { font-size: 0.85rem; margin-bottom: 6px; height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
+            
+            .footer-pro { border-radius: 0; padding: 25px 15px 15px; text-align: center; margin-bottom: 0px; }
+            .offcanvas-end { height: 100vh !important; top: 0 !important; width: 85% !important; border-radius: 0; }
+            .admin-panel { padding: 15px; margin-top: 90px;}
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo" id="logoArea" onclick="navTo('public'); window.scrollTo(0,0);">
+            <img id="view-navLogo" src="">
+            <span style="font-size: 1.3rem; font-weight: 800; color: #1e1b4b;" id="view-navText">Fary EdTech</span>
+        </div>
+        
+        <div class="nav-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Cari produk aplikasi..." onkeyup="cariProduk(this.value)">
+        </div>
+        
+        <div class="nav-links d-none d-md-flex" id="navLinks">
+            <a href="javascript:void(0)" onclick="navTo('public')">Beranda</a>
+            <a href="javascript:void(0)" onclick="navTo('public'); setTimeout(function(){document.getElementById('toko').scrollIntoView()}, 100);">Produk</a>
+            <a href="javascript:void(0)" onclick="bukaProfil()">Profil</a>
+            <a href="javascript:void(0)" onclick="navTo('cart')" style="color:#ef4444;"><i class="fa-solid fa-cart-shopping"></i> Keranjang <span class="cart-badge-count bg-danger text-white rounded px-1" style="font-size:0.75rem;">0</span></a>
+            <a href="javascript:void(0)" id="nav-btn-login-desktop" onclick="navTo('login')"><i class="fa-solid fa-lock"></i> Admin</a>
+            
+            <a href="javascript:void(0)" class="admin-only d-none" onclick="navTo('admin-dashboard')" style="color:#06b6d4;">Dashboard</a>
+            <a href="javascript:void(0)" class="admin-only d-none" onclick="navTo('admin-orders')" style="color:#06b6d4;">Pesanan Baru</a>
+            <a href="javascript:void(0)" class="admin-only d-none" onclick="navTo('admin-products')" style="color:#06b6d4;">Katalog</a>
+            <a href="javascript:void(0)" class="admin-only d-none" onclick="navTo('admin-settings')" style="color:#06b6d4;">Pengaturan</a>
+            <a href="javascript:void(0)" class="admin-only d-none" onclick="logout()" style="color:red;">Keluar</a>
+        </div>
+
+        <div class="d-md-none ms-auto d-flex align-items-center gap-3">
+            <a href="javascript:void(0)" id="nav-btn-login-mobile" onclick="navTo('login')" class="text-dark fs-5"><i class="fa-solid fa-lock"></i></a>
+            <a href="javascript:void(0)" class="admin-only d-none text-info fs-5" onclick="navTo('admin-dashboard')"><i class="fa-solid fa-gauge-high"></i></a>
+        </div>
+    </nav>
+
+    <div class="mobile-bottom-nav d-md-none">
+        <a href="javascript:void(0)" onclick="navTo('public'); window.scrollTo(0,0);" class="bottom-nav-item active" id="bnav-home">
+            <i class="fa-solid fa-house"></i><span>Beranda</span>
+        </a>
+        <a href="javascript:void(0)" onclick="navTo('public'); setTimeout(function(){document.getElementById('toko').scrollIntoView()}, 100);" class="bottom-nav-item" id="bnav-prod">
+            <i class="fa-solid fa-box-open"></i><span>Produk</span>
+        </a>
+        <a href="javascript:void(0)" onclick="navTo('cart')" class="bottom-nav-item position-relative" id="bnav-cart">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-badge-count position-absolute translate-middle badge rounded-pill bg-danger" style="top: -2px; left: 65%; font-size: 0.55rem; padding: 2px 4px;">0</span>
+            <span>Keranjang</span>
+        </a>
+        <a href="javascript:void(0)" onclick="bukaProfil()" class="bottom-nav-item" id="bnav-prof">
+            <i class="fa-solid fa-user"></i><span>Profil</span>
+        </a>
+    </div>
+
+    <div class="ticker-wrap"><div class="ticker-text" id="buyer-ticker">Selamat datang di aplikasi kami...</div></div>
+
+    <div id="view-public" class="spa-view active">
+        <div class="container-utama">
+            <section class="hero"><div id="heroImageArea"></div><div id="promoArea"></div><h1 id="heroJudul">Memuat...</h1><p id="heroDeskripsi">Memuat deskripsi toko...</p></section>
+            <h2 class="section-title" id="toko">Katalog Produk</h2>
+            <div class="product-grid mb-5" id="daftarProduk"><div style="grid-column: 1/-1; text-align: center;"><i class="fa-solid fa-spinner fa-spin fa-2x"></i> Mengambil data dari server...</div></div>
+        </div>
+
+        <footer class="footer-pro">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5 mb-4 pe-lg-5">
+                        <div class="d-flex align-items-center gap-3 mb-3"><img id="footer-logo" src="" style="width:40px; height:40px; border-radius:50%; display:none; object-fit:cover; border:2px solid white;"><h5 class="mb-0 fs-5" id="footer-namaToko">Fary EdTech</h5></div>
+                        <p id="footer-role" style="line-height:1.6; margin-bottom: 20px; font-size:0.95rem;">Menghadirkan inovasi teknologi untuk pendidikan masa depan.</p>
+                        <div id="footer-social" class="d-flex flex-wrap"></div>
+                    </div>
+                    <div class="col-lg-3 mb-4 mt-lg-0 mt-2">
+                        <h5>Tautan Cepat</h5>
+                        <a href="javascript:void(0)" class="quick-link" onclick="window.scrollTo(0,0);"><i class="fa-solid fa-angle-right me-2 text-info"></i> Beranda</a>
+                        <a href="javascript:void(0)" class="quick-link" onclick="document.getElementById('toko').scrollIntoView();"><i class="fa-solid fa-angle-right me-2 text-info"></i> Katalog Produk</a>
+                        <a href="javascript:void(0)" class="quick-link" onclick="bukaProfil();"><i class="fa-solid fa-angle-right me-2 text-info"></i> Profil Developer</a>
+                        <a href="javascript:void(0)" class="quick-link" onclick="bukaPrivasi();"><i class="fa-solid fa-angle-right me-2 text-info"></i> Kebijakan Privasi</a>
+                    </div>
+                    <div class="col-lg-4 mb-4 mt-lg-0 mt-2">
+                        <h5>Hubungi Kami</h5>
+                        <div class="d-flex align-items-center mb-2"><i class="fa-solid fa-map-location-dot fs-5 text-info" style="width:30px;"></i> <span id="footer-domisili" class="fs-6">-</span></div>
+                        <div class="d-flex align-items-center mb-2"><i class="fa-brands fa-whatsapp fs-5 text-success" style="width:30px;"></i> <span id="footer-wa">-</span></div>
+                        <div class="d-flex align-items-center mb-2"><i class="fa-solid fa-envelope fs-5 text-warning" style="width:30px;"></i> <span id="footer-email">-</span></div>
+                    </div>
+                </div>
+                <div class="footer-bottom"><p class="mb-0">© 2026 <span id="footer-copyright">Fary EdTech</span>. All Rights Reserved.</p></div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="view-detail" class="spa-view container-utama">
+        <button class="btn btn-outline-secondary mb-3 fw-bold rounded-pill px-4 shadow-sm" onclick="navTo('public'); window.scrollTo(0,0);">
+            <i class="fa-solid fa-arrow-left"></i> Kembali ke Katalog
+        </button>
+        
+        <div class="row bg-white p-4 rounded-4 shadow-sm border mb-4">
+            <div class="col-md-5 text-center mb-3">
+                <img id="det-img" src="" class="img-fluid rounded border p-2 shadow-sm" style="max-height: 350px; object-fit: contain; width: 100%;">
+            </div>
+            <div class="col-md-7 d-flex flex-column justify-content-center">
+                <h2 id="det-nama" class="fw-bold" style="color: #1e1b4b;">Nama Produk</h2>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <h3 id="det-harga-asli" class="text-primary fw-bold mb-0">Rp 0</h3>
+                    <span id="det-harga-coret" class="text-muted text-decoration-line-through"></span>
+                </div>
+                <p id="det-desc-singkat" class="text-secondary mb-4" style="font-size: 1.05rem;"></p>
+                
+                <div id="det-opsi-siswa" class="mb-3 p-3 bg-light rounded-3 border d-none">
+                    <label class="fw-bold mb-2 text-primary"><i class="fa-solid fa-users"></i> Pilih Jumlah Siswa/Pengguna:</label>
+                    <select id="det-select-siswa" class="form-select border-primary shadow-sm"></select>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2 mt-auto">
+                    <button class="btn fw-bold text-white px-4 py-2 shadow-sm" style="background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none;" id="det-btn-beli"><i class="fa-solid fa-cart-plus"></i> MASUKKAN KERANJANG</button>
+                    <a href="#" id="det-btn-vid" target="_blank" class="btn btn-outline-danger fw-bold px-3 py-2 d-none shadow-sm"><i class="fa-brands fa-youtube"></i> Video Tutorial</a>
+                    <a href="#" id="det-btn-demo" target="_blank" class="btn btn-outline-info fw-bold px-3 py-2 d-none shadow-sm"><i class="fa-solid fa-laptop-code"></i> Uji Coba (Demo)</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
+            <h4 class="fw-bold border-bottom pb-2 mb-3"><i class="fa-solid fa-list-check text-primary"></i> Spesifikasi & Deskripsi Lengkap</h4>
+            <div id="det-desc-lengkap" style="line-height: 1.7; white-space: pre-wrap; font-size: 0.95rem; color: #4b5563;"></div>
+        </div>
+
+        <div class="bg-white p-4 rounded-4 shadow-sm border mb-5">
+            <h4 class="fw-bold border-bottom pb-2 mb-4"><i class="fa-solid fa-comments text-warning"></i> Penilaian & Ulasan Pembeli</h4>
+            <div class="row">
+                <div class="col-md-5 border-end pe-md-4 mb-4">
+                    <div class="bg-light p-3 rounded-4 border shadow-sm">
+                        <h6 class="fw-bold mb-3 text-dark">Tulis Pengalaman Anda</h6>
+                        <form id="formUlasan" onsubmit="kirimUlasan(event)">
+                            <input type="hidden" id="ulas-prod-id">
+                            <div class="mb-2"><input type="text" id="ulas-nama" class="form-control" placeholder="Nama Lengkap *" required></div>
+                            <div class="mb-2"><input type="number" id="ulas-wa" class="form-control" placeholder="Nomor WhatsApp *" required></div>
+                            <div class="mb-3"><input type="text" id="ulas-kota" class="form-control" placeholder="Kota Domisili *" required></div>
+                            <div class="mb-3 text-center bg-white p-2 rounded border">
+                                <label class="small text-muted mb-1 fw-bold d-block">Pilih Rating Bintang *</label>
+                                <div class="star-rating fs-2 text-warning" style="cursor: pointer;" id="star-container">
+                                    <i class="fa-regular fa-star" data-val="1"></i> <i class="fa-regular fa-star" data-val="2"></i> <i class="fa-regular fa-star" data-val="3"></i> <i class="fa-regular fa-star" data-val="4"></i> <i class="fa-regular fa-star" data-val="5"></i>
+                                </div>
+                                <input type="hidden" id="ulas-bintang" required>
+                            </div>
+                            <div class="mb-3"><textarea id="ulas-teks" class="form-control" rows="3" placeholder="Tulis komentar pengalaman Anda menggunakan aplikasi ini..." required></textarea></div>
+                            <button type="submit" id="btn-kirim-ulasan" class="btn btn-primary w-100 fw-bold py-2 shadow-sm"><i class="fa-solid fa-paper-plane"></i> Kirim Ulasan</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-7 ps-md-4">
+                    <h6 class="fw-bold mb-3 text-dark">Ulasan Terbaru</h6>
+                    <div id="list-ulasan" style="max-height: 500px; overflow-y: auto; padding-right: 5px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mb-5"><button class="btn btn-secondary px-5 fw-bold rounded-pill shadow-sm" onclick="navTo('public'); window.scrollTo(0,0);">Kembali ke Daftar Produk</button></div>
+    </div>
+
+    <div id="view-login" class="spa-view container-utama"><div class="row justify-content-center mt-5"><div class="col-md-5"><div class="card shadow border-0 rounded-4"><div class="card-header bg-dark text-white text-center py-3"><h4 class="mb-0">Login Admin</h4></div><div class="card-body p-4"><form onsubmit="handleLogin(event)"><div class="mb-3"><label class="text-muted small">Email</label><input type="email" id="logEmail" class="form-control" required></div><div class="mb-4"><label class="text-muted small">Password</label><div class="input-group"><input type="password" id="logPass" class="form-control" required><span class="input-group-text bg-white cursor-pointer" onclick="togglePassword()"><i id="toggleIcon" class="fa-solid fa-eye text-muted"></i></span></div></div><button type="submit" id="btnLog" class="btn btn-dark w-100 fw-bold">Masuk</button></form></div></div></div></div></div>
+    <div id="view-admin-dashboard" class="spa-view container-utama"><div class="admin-panel"><h3 class="mb-4"><i class="fa-solid fa-gauge"></i> Dashboard Admin</h3><div class="row text-center"><div class="col-md-4 mb-3"><div class="card shadow-sm bg-info text-white p-4"><h2 id="stat-prod">0</h2><p>Total Produk</p></div></div><div class="col-md-4 mb-3"><div class="card shadow-sm bg-success text-white p-4"><h2 id="stat-user">0</h2><p>Total Admin</p></div></div><div class="col-md-4 mb-3"><div class="card shadow-sm bg-warning text-dark p-4"><h2 id="stat-order">0</h2><p>Pesanan Masuk</p></div></div></div></div></div>
+    <div id="view-admin-orders" class="spa-view container-utama"><div class="admin-panel"><h3 class="mb-4"><i class="fa-solid fa-clipboard-list text-primary"></i> Data Pemesanan</h3><div class="table-responsive"><table class="table table-bordered table-striped bg-white align-middle" style="font-size: 0.9rem; min-width:800px;"><thead class="table-dark"><tr><th>Tgl</th><th>Nomor WA</th><th>Pemesan</th><th>Kota</th><th>Produk</th><th>Qty</th><th>Total Rp</th><th>Status</th></tr></thead><tbody id="table-orders-body"></tbody></table></div></div></div>
+    <div id="view-admin-products" class="spa-view container-utama"><div class="admin-panel"><div class="d-flex justify-content-between mb-3 flex-wrap gap-2"><h3><i class="fa-solid fa-box"></i> Manajemen Produk</h3><button class="btn btn-success" onclick="openModalProduct()"><i class="fa-solid fa-plus"></i> Tambah Produk</button></div><div class="table-responsive"><table class="table table-bordered table-hover bg-white align-middle" style="min-width:600px;"><thead class="table-dark"><tr><th>Foto</th><th>Nama</th><th>Harga Asli</th><th>Sistem Siswa</th><th style="width:100px;">Aksi</th></tr></thead><tbody id="table-produk-body"></tbody></table></div></div></div>
+    <div id="view-admin-settings" class="spa-view container-utama"><div class="admin-panel"><h3 class="mb-4"><i class="fa-solid fa-gear"></i> Pengaturan Beranda</h3><form id="formSettings" onsubmit="saveSettings(event)"><div class="row"><div class="col-md-6 mb-4"><label class="form-label">Upload Logo Toko</label><input type="file" id="logo-file" class="form-control" accept="image/*" onchange="triggerCrop(event, 'logo')"><input type="hidden" id="set-logoToko"><img id="preview-logo" src="" class="mt-2 rounded-circle" style="width:80px; height:80px; display:none; object-fit:cover; border:2px solid #ddd;"></div><div class="col-md-6 mb-4"><label class="form-label">Upload Gambar Hero</label><input type="file" id="hero-file" class="form-control" accept="image/*" onchange="triggerCrop(event, 'hero')"><input type="hidden" id="set-heroImage"><img id="preview-hero" src="" class="mt-2 rounded" style="max-height:80px; display:none; object-fit:cover;"></div></div><div class="mb-3"><label class="form-label">Judul Besar Beranda</label><input type="text" id="set-heroJudul" class="form-control" required></div><div class="mb-3"><label class="form-label">Deskripsi Beranda</label><textarea id="set-heroDeskripsi" class="form-control" rows="3" required></textarea></div><div class="mb-3"><label class="form-label">Teks Promo Bedge</label><input type="text" id="set-promoText" class="form-control"></div><button type="submit" id="btnSaveSet" class="btn btn-primary mt-3"><i class="fa-solid fa-save"></i> Simpan Pengaturan</button></form></div></div>
+    <div id="view-admin-profile" class="spa-view container-utama"><div class="admin-panel"><h3 class="mb-4"><i class="fa-solid fa-user-tie"></i> Pengaturan Profil & Kontak</h3><form id="formProfile" onsubmit="saveProfile(event)"><div class="row"><div class="col-md-6 mb-3"><label>Nama Penjual / Toko</label><input type="text" id="prof-nama" class="form-control"></div><div class="col-md-6 mb-3"><label>Role / Profesi</label><input type="text" id="prof-role" class="form-control"></div><div class="col-md-6 mb-3"><label>Domisili</label><input type="text" id="prof-domisili" class="form-control"></div><div class="col-md-6 mb-3"><label>Spesialisasi</label><input type="text" id="prof-spesialisasi" class="form-control"></div><div class="col-md-12 mb-3"><label>Deskripsi Profil</label><textarea id="prof-desc" class="form-control" rows="3"></textarea></div><div class="col-md-6 mb-3"><label>Nomor WhatsApp (Cth: 62812...)</label><input type="text" id="prof-wa" class="form-control"></div><div class="col-md-6 mb-3"><label>Email</label><input type="email" id="prof-email" class="form-control"></div><div class="col-md-6 mb-3"><label>Username Instagram (tanpa @)</label><input type="text" id="prof-ig" class="form-control"></div><div class="col-md-6 mb-3"><label>Username Facebook</label><input type="text" id="prof-fb" class="form-control"></div><div class="col-md-6 mb-3"><label>Link / Channel YouTube</label><input type="text" id="prof-yt" class="form-control"></div><div class="col-md-6 mb-3"><label>Username TikTok (tanpa @)</label><input type="text" id="prof-tt" class="form-control"></div><div class="col-md-12 mb-4"><label>Upload Foto Profil</label><input type="file" id="prof-file" class="form-control" accept="image/*" onchange="triggerCrop(event, 'prof')"><input type="hidden" id="prof-foto"><img id="preview-prof" src="" class="mt-2 rounded-circle" style="width:100px; height:100px; display:none; object-fit:cover; border:2px solid #ddd;"></div></div><button type="submit" id="btnSaveProf" class="btn btn-primary mt-2"><i class="fa-solid fa-save"></i> Simpan Profil</button></form></div></div>
+
+    <div class="offcanvas offcanvas-end shadow-lg" tabindex="-1" id="cartOffcanvas" data-bs-scroll="true" data-bs-backdrop="false">
+        <div class="offcanvas-header bg-primary text-white"><h5 class="offcanvas-title fs-6"><i class="fa-solid fa-cart-shopping"></i> Keranjang Belanja</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button></div>
+        <div class="offcanvas-body d-flex flex-column p-3">
+            <div id="cart-items-container" class="flex-grow-1 overflow-auto"><p class="text-muted">Keranjang kosong.</p></div>
+            <div class="mt-2 border-top pt-2">
+                <h4 id="cart-total" class="fw-bold text-primary d-none text-end mb-2 fs-5">Total: Rp 0</h4>
+                <div id="cart-data-pemesan" class="bg-light p-2 rounded mb-2 d-none" style="border:1px solid #ccc;">
+                    <div class="d-flex justify-content-between mb-1"><span style="font-size:0.8rem; font-weight:800; color:#555;"><i class="fa-solid fa-address-card"></i> Data Pemesan</span><a href="javascript:void(0)" onclick="bukaModalPemesan()" class="btn btn-sm btn-outline-primary fw-bold" style="padding: 0px 8px; font-size:0.75rem;">Isi Data</a></div>
+                    <input type="text" id="cart-in-nama" class="form-control cart-input-readonly p-1 mb-1" placeholder="[Nama Lengkap]" readonly onclick="bukaModalPemesan()">
+                    <input type="number" id="cart-in-wa" class="form-control cart-input-readonly p-1 mb-1" placeholder="[Nomor WA Aktif]" readonly onclick="bukaModalPemesan()">
+                    <input type="text" id="cart-in-instansi" class="form-control cart-input-readonly p-1 mb-1" placeholder="[Instansi Opsional]" readonly onclick="bukaModalPemesan()">
+                    <input type="text" id="cart-in-kota" class="form-control cart-input-readonly p-1" placeholder="[Kota Domisili]" readonly onclick="bukaModalPemesan()">
+                </div>
+                <button id="btn-checkout" class="btn btn-success w-100 fw-bold shadow-sm" onclick="prosesKirimWA(event)"><i class="fa-brands fa-whatsapp fs-5"></i> Checkout & Kirim</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCheckoutForm" tabindex="-1"><div class="modal-dialog modal-dialog-centered px-2"><div class="modal-content border-0 shadow-lg rounded-4"><div class="modal-header bg-warning text-dark"><h5 class="modal-title fw-bold fs-6"><i class="fa-solid fa-file-signature"></i> Lengkapi Data</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body p-3"><form id="formPemesan" onsubmit="simpanDataPemesan(event)"><div class="mb-2"><label class="form-label text-muted small mb-1">Nama Lengkap <span class="text-danger">*</span></label><input type="text" id="co-nama" class="form-control" required></div><div class="mb-2"><label class="form-label text-muted small mb-1">Nomor WhatsApp <span class="text-danger">*</span></label><input type="number" id="co-wa" class="form-control" required></div><div class="mb-2"><label class="form-label text-muted small mb-1">Instansi / Perusahaan</label><input type="text" id="co-instansi" class="form-control"></div><div class="mb-3"><label class="form-label text-muted small mb-1">Kota Domisili <span class="text-danger">*</span></label><input type="text" id="co-kota" class="form-control" required></div><button type="submit" class="btn btn-primary w-100 fw-bold py-2"><i class="fa-solid fa-save"></i> Simpan Data</button></form></div></div></div></div>
+
+    <div id="modalProfil" class="modal" tabindex="-1" style="background: rgba(0,0,0,0.6); display: none;"><div class="modal-dialog modal-dialog-centered modal-dialog-scrollable px-2"><div class="modal-content rounded-4 border-0 shadow-lg p-2"><div class="modal-header border-0 pb-0"><button type="button" class="btn-close" onclick="document.getElementById('modalProfil').style.display='none'"></button></div><div class="modal-body text-center"><img id="view-profFoto" src="" class="rounded-circle mb-2 border border-3 border-primary" width="90" height="90" style="object-fit:cover;"><h4 class="fw-bold text-dark fs-5" id="view-profNama">Nama</h4><p class="text-warning fw-bold mb-1" style="font-size:0.9rem;" id="view-profRole">Role</p><p class="text-start text-muted mt-2" id="view-profDesc" style="font-size:0.85rem; text-align: justify !important; line-height: 1.5;">Deskripsi</p><table class="table table-sm text-start mt-3 border-top pt-2" style="font-size:0.85rem;"><tr><th style="width: 35%" class="text-muted">Domisili</th><td id="view-profDomisili" class="fw-bold">-</td></tr><tr><th class="text-muted">Spesialisasi</th><td id="view-profSpesial" class="fw-bold">-</td></tr><tr><th class="text-muted">Status</th><td class="fw-bold text-success">Open for Projects</td></tr><tr><th class="text-muted">HP/WA</th><td id="view-profWaText" class="fw-bold">-</td></tr><tr><th class="text-muted">Email</th><td id="view-profEmailText" class="fw-bold">-</td></tr></table></div></div></div></div>
+    
+   <div id="modalPrivasi" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable px-2">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header border-bottom bg-light">
+                    <h5 class="modal-title fw-bold fs-6"><i class="fa-solid fa-shield-halved text-primary me-2"></i> Kebijakan Privasi & Keamanan Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 text-secondary" style="font-size: 0.9rem; text-align: justify; line-height: 1.6;">
+                    
+                    <p class="mb-4">Kami di <strong>Fary EdTech</strong> ("Kami", "Platform") sangat menghargai dan berkomitmen penuh untuk melindungi privasi serta keamanan data pribadi Anda. Kebijakan ini menjelaskan dengan transparan bagaimana kami mengumpulkan, menggunakan, menyimpan, dan melindungi informasi Anda saat menggunakan aplikasi ini.</p>
+
+                    <h6 class="text-dark fw-bold mb-2">1. Pengumpulan Informasi Pribadi</h6>
+                    <p class="mb-4">Untuk memastikan kelancaran layanan dan proses pemesanan produk aplikasi/sistem kami, kami hanya mengumpulkan informasi yang sangat esensial secara langsung dari Anda melalui form pemesanan, yang meliputi:
+                        <ul class="mb-0">
+                            <li>Nama Lengkap (Sesuai identitas Anda)</li>
+                            <li>Nomor WhatsApp aktif (Untuk komunikasi pengiriman file & invoice)</li>
+                            <li>Instansi / Asal Sekolah (Opsional, untuk pendataan administrasi)</li>
+                            <li>Kota / Domisili Domisili</li>
+                        </ul>
+                    </p>
+
+                    <h6 class="text-dark fw-bold mb-2">2. Penggunaan Informasi</h6>
+                    <p class="mb-4">Data yang kami kumpulkan secara eksklusif digunakan untuk kepentingan transaksional dan peningkatan kualitas layanan, di antaranya:
+                        <ul class="mb-0">
+                            <li>Memproses, memvalidasi, dan mengirimkan detail pesanan aplikasi melalui WhatsApp.</li>
+                            <li>Merespons pertanyaan, permintaan demo teknis, atau bantuan teknis <em>(support)</em> dari Anda.</li>
+                            <li>Mengirimkan informasi pembaruan (*update*) atau perbaikan <em>(bug-fix)</em> terkait produk yang telah Anda beli.</li>
+                        </ul>
+                    </p>
+
+                    <h6 class="text-dark fw-bold mb-2">3. Perlindungan & Keamanan Data</h6>
+                    <p class="mb-4">Kami menerapkan standar keamanan siber (*cybersecurity*) yang ketat menggunakan infrastruktur penyimpanan tersertifikasi (Google Cloud Ecosystem). Kami menjamin dengan sepenuh hati bahwa:
+                        <ul class="mb-0">
+                            <li>Data Anda <strong>tidak akan pernah</strong> diperjualbelikan, disewakan, atau ditukar kepada pihak ketiga mana pun (termasuk biro iklan).</li>
+                            <li>Nomor WhatsApp yang Anda gunakan untuk ulasan publik (*review*) akan disensor secara otomatis demi melindungi privasi Anda dari penyalahgunaan (contoh: 0812****89).</li>
+                        </ul>
+                    </p>
+
+                    <h6 class="text-dark fw-bold mb-2">4. Retensi (Penyimpanan) Data</h6>
+                    <p class="mb-4">Kami akan menyimpan data transaksi Anda hanya selama diperlukan untuk tujuan garansi pemeliharaan sistem <em>(maintenance warranty)</em> dan rekam jejak pembelian lisensi. Anda berhak sewaktu-waktu meminta penghapusan riwayat data Anda dari sistem kami dengan menghubungi Admin melalui WhatsApp.</p>
+
+                    <h6 class="text-dark fw-bold mb-2">5. Persetujuan Pengguna</h6>
+                    <p class="mb-0">Dengan menekan tombol "Checkout & Kirim" atau menuliskan ulasan di platform kami, Anda secara sadar dan sukarela menyetujui seluruh ketentuan pengumpulan dan penggunaan informasi yang tertulis di dalam Kebijakan Privasi ini.</p>
+                    
+                </div>
+                <div class="modal-footer border-top-0 p-3 bg-light rounded-bottom-4">
+                    <button type="button" class="btn btn-primary fw-bold w-100 py-2 shadow-sm rounded-pill" data-bs-dismiss="modal">Saya Paham & Setuju</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalProduct" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg px-2">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title fs-6"><i class="fa-solid fa-box"></i> Data Produk</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body p-3">
+                    <form id="formProduct">
+                        <input type="hidden" id="prod-id"><input type="hidden" id="prod-fotoUrl">
+                        <div class="row">
+                            <div class="col-md-6 mb-2"><label class="text-muted small fw-bold">Nama Produk</label><input type="text" id="prod-nama" class="form-control form-control-sm" required></div>
+                            <div class="col-md-6 mb-2"><label class="text-muted small fw-bold">Detail Singkat (Katalog)</label><input type="text" id="prod-detail" class="form-control form-control-sm" required></div>
+                            <div class="col-md-12 mb-3"><label class="text-muted small fw-bold">Spesifikasi Lengkap</label><textarea id="prod-spesifikasi" class="form-control form-control-sm" rows="4" placeholder="Tulis spesifikasi lengkap di sini..."></textarea></div>
+                            <div class="col-md-12 mb-3 bg-light p-2 rounded border"><div class="form-check form-switch mb-1"><input class="form-check-input" type="checkbox" id="prod-opsiSiswa"><label class="form-check-label fw-bold text-primary small" for="prod-opsiSiswa">Aktifkan Opsi Jumlah Siswa</label></div></div>
+                            <div class="col-6 mb-2"><label class="text-muted small fw-bold">Harga Coret</label><input type="number" id="prod-hCoret" class="form-control form-control-sm"></div>
+                            <div class="col-6 mb-2"><label class="text-muted small fw-bold">Harga Asli</label><input type="number" id="prod-hAsli" class="form-control form-control-sm" required></div>
+                            <div class="col-md-4 mb-2 d-none"><label class="text-muted small fw-bold">Harga Midtrans</label><input type="number" id="prod-hMidtrans" class="form-control form-control-sm"></div>
+                            <div class="col-6 mb-2"><label class="text-muted small fw-bold">Link Demo</label><input type="text" id="prod-linkDemo" class="form-control form-control-sm"></div>
+                            <div class="col-6 mb-2"><label class="text-muted small fw-bold">Link Video</label><input type="text" id="prod-linkVid" class="form-control form-control-sm"></div>
+                            <div class="col-md-12 mb-2"><label class="text-muted small fw-bold">Upload Gambar</label><input type="file" id="prod-file" class="form-control form-control-sm" accept="image/*" onchange="triggerCrop(event, 'prod')"><img id="preview-prod" src="" class="mt-2 rounded" style="max-height:80px; display:none; object-fit:cover; border:1px solid #ddd;"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer p-2"><button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button><button type="button" class="btn btn-primary btn-sm px-3" onclick="submitProduct()" id="btnSaveProd"><i class="fa-solid fa-save"></i> Simpan</button></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="modalCrop" tabindex="-1" data-bs-backdrop="static"><div class="modal-dialog modal-lg px-2"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fs-6">Sesuaikan Gambar</h5></div><div class="modal-body text-center p-2"><div><img id="crop-image-container" src="" style="max-width:100%;"></div></div><div class="modal-footer p-2"><button type="button" class="btn btn-secondary btn-sm" onclick="cancelCrop()">Batal</button><button type="button" class="btn btn-success btn-sm px-3" onclick="applyCrop()"><i class="fa-solid fa-crop"></i> Potong</button></div></div></div></div>
+
+    <button id="btnTop" class="floating-btn" onclick="scrollToTop()" title="Ke Atas"><i class="fa-solid fa-arrow-up"></i></button>
+    <a id="btnWA_floating" class="floating-btn" href="#" target="_blank" title="Live Chat"><i class="fa-brands fa-whatsapp"></i></a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    
+<script>
+    // ==========================================
+    // 1. KONFIGURASI API (WAJIB DIISI)
+    // ==========================================
+    // Nanti ganti teks di bawah ini dengan URL Web App dari Google Apps Script Anda
+    const GAS_API_URL = "https://script.google.com/a/macros/admin.sma.belajar.id/s/AKfycbyIp-cjNfm_ujcyQ0X8jZ_w6YFaQyurXNBldIbgOGyPBBbbjYRVjLLAqODnQttfkNWM/exec";
+
+    // Fungsi Pembantu untuk Request GET
+    async function gasAPI_GET(action, extraParams = "") {
+        try {
+            let response = await fetch(`${GAS_API_URL}?action=${action}${extraParams}`);
+            return await response.json();
+        } catch(error) {
+            console.error("GET Error:", error);
+            throw error;
+        }
+    }
+
+    // Fungsi Pembantu untuk Request POST (Kirim Data)
+    async function gasAPI_POST(payload) {
+        try {
+            let response = await fetch(GAS_API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" }, // Wajib text/plain agar tidak kena error CORS di GAS
+                body: JSON.stringify(payload)
+            });
+            return await response.json();
+        } catch(error) {
+            console.error("POST Error:", error);
+            throw error;
+        }
+    }
+
+    // 2. PENANGKAP ERROR GLOBAL
+    window.onerror = function(msg, url, line) {
+        console.error("System Error (Line " + line + "): " + msg);
+        var box = document.getElementById('daftarProduk');
+        if(box) box.innerHTML = "<div class='alert alert-danger mx-auto w-75 mt-5 text-center'><b>Maaf, terjadi kesalahan sistem:</b><br>" + msg + "</div>";
+        return false;
+    };
+
+    var currentUser = null;
+    var dbProducts = []; 
+    var cart = []; 
+    var appSettings = {}; 
+    var cropper = null;
+    var currentCropTarget = ''; 
+    var base64Images = { hero: null, prof: null, logo: null, prod: null }; 
+    var cartOffcanvasInstance = null; 
+    var checkoutModalInstance = null;
+
+    // 3. FUNGSI SCROLL & PASSWORD
+    window.onscroll = function() {
+        var btnTop = document.getElementById("btnTop");
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) btnTop.style.display = "flex";
+        else btnTop.style.display = "none";
+    };
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+    function togglePassword() {
+        var passInput = document.getElementById('logPass');
+        var passIcon = document.getElementById('toggleIcon');
+        if(passInput.type === 'password') { passInput.type = 'text'; passIcon.classList.remove('fa-eye'); passIcon.classList.add('fa-eye-slash'); } 
+        else { passInput.type = 'password'; passIcon.classList.remove('fa-eye-slash'); passIcon.classList.add('fa-eye'); }
+    }
+
+    // 4. SISTEM HITUNG MUNDUR LOADING ADMIN
+    function mulaiLoadingBtn(btnId, originalHtml) {
+        var btn = document.getElementById(btnId);
+        if (!btn) return null;
+        btn.disabled = true;
+        var counter = 5;
+        btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Proses (" + counter + "s)";
+        var interval = setInterval(function() {
+            counter--;
+            if (counter > 0) { btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Proses (" + counter + "s)"; } 
+            else { btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Tunggu..."; clearInterval(interval); }
+        }, 1000);
+        return { id: interval, btn: btn, html: originalHtml };
+    }
+
+    function stopLoadingBtn(obj) {
+        if (obj) { clearInterval(obj.id); obj.btn.disabled = false; obj.btn.innerHTML = obj.html; }
+    }
+
+    function tampilSwalLoading(judul) {
+        var interval;
+        Swal.fire({
+            title: judul, html: 'Memproses ke server... <b>5</b> detik', allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+                const b = Swal.getHtmlContainer().querySelector('b');
+                let counter = 5;
+                interval = setInterval(() => { counter--; if (b && counter >= 0) b.textContent = counter; }, 1000);
+            }
+        });
+        return interval;
+    }
+
+    // 5. TICKER PEMBELI
+    function fetchBuyersTicker() {
+        gasAPI_GET('getRecentBuyers').then(buyers => {
+            if(buyers && buyers.length > 0) {
+                var tickerStr = "";
+                for(var i=0; i<buyers.length; i++) {
+                    tickerStr += "Terima kasih Bpk/Ibu <b>" + buyers[i].nama + "</b>";
+                    if(buyers[i].instansi) tickerStr += " (" + buyers[i].instansi + ")";
+                    if(buyers[i].kota) tickerStr += ", " + buyers[i].kota;
+                    tickerStr += " telah menggunakan produk kami. &nbsp; &bull; &nbsp; ";
+                }
+                document.getElementById('buyer-ticker').innerHTML = tickerStr;
+            } else { document.getElementById('buyer-ticker').innerHTML = "Selamat datang di Fary EdTech. Solusi teknologi pendidikan masa depan."; }
+        }).catch(e => console.error("Gagal load ticker"));
+    }
+
+    // 6. CACHE & INISIALISASI UTAMA
+    function saveCart() { localStorage.setItem('faryCart', JSON.stringify(cart)); }
+    function loadStorage() {
+        let savedCart = localStorage.getItem('faryCart');
+        if (savedCart) { try { cart = JSON.parse(savedCart); } catch(e){} }
+        let savedUser = localStorage.getItem('faryUser');
+        if (savedUser) { try { currentUser = JSON.parse(savedUser); } catch(e){} }
+    }
+
+    function initApp() {
+        cartOffcanvasInstance = new bootstrap.Offcanvas(document.getElementById('cartOffcanvas'), { backdrop: false });
+        checkoutModalInstance = new bootstrap.Modal(document.getElementById('modalCheckoutForm'));
+        
+        loadStorage(); 
+        updateCartBadge();
+
+        if(currentUser && currentUser.role === 'admin') {
+            document.getElementById('nav-btn-login-desktop').classList.add('d-none');
+            var btnMb = document.getElementById('nav-btn-login-mobile'); if(btnMb) btnMb.classList.add('d-none');
+            var adminMenus = document.querySelectorAll('.admin-only');
+            for(var j=0; j<adminMenus.length; j++) adminMenus[j].classList.remove('d-none');
+        }
+
+        memuatPengaturan();
+        fetchProductsFromSheet(); 
+        fetchBuyersTicker(); 
+    }
+
+    function renderPengaturan(settings) {
+        try {
+            appSettings = settings || {};
+            
+            document.getElementById('view-navText').innerText = settings.profNama || "Fary EdTech";
+            if(settings.logoToko) { document.getElementById('view-navLogo').src = settings.logoToko; document.getElementById('view-navLogo').style.display = 'block'; }
+            document.getElementById('heroJudul').innerText = settings.heroJudul || "Selamat Datang di Fary EdTech";
+            document.getElementById('heroDeskripsi').innerText = settings.heroDeskripsi || "Silakan atur deskripsi di halaman Admin.";
+            if(settings.heroImage) document.getElementById('heroImageArea').innerHTML = "<img src='" + settings.heroImage + "' class='hero-img'>";
+            if(settings.promoText) document.getElementById('promoArea').innerHTML = "<div class='promo-badge'>" + settings.promoText + "</div>";
+            
+            document.getElementById('view-profNama').innerText = settings.profNama || "Admin";
+            document.getElementById('view-profRole').innerText = settings.profRole || "-";
+            document.getElementById('view-profDesc').innerText = settings.profDesc || "-";
+            document.getElementById('view-profDomisili').innerText = settings.domisili || "-";
+            document.getElementById('view-profSpesial').innerText = settings.spesialisasi || "-";
+            document.getElementById('view-profWaText').innerHTML = settings.wa ? "<a href='https://wa.me/" + settings.wa + "' target='_blank' class='text-decoration-none fw-bold text-success'>+" + settings.wa + "</a>" : "-";
+            document.getElementById('view-profEmailText').innerHTML = settings.email ? "<a href='mailto:" + settings.email + "' class='text-decoration-none fw-bold'>" + settings.email + "</a>" : "-";
+            document.getElementById('view-profFoto').src = settings.profFoto || "https://via.placeholder.com/150";
+
+            document.getElementById('footer-namaToko').innerText = settings.profNama || "Fary EdTech";
+            document.getElementById('footer-copyright').innerText = settings.profNama || "Fary EdTech";
+            document.getElementById('footer-role').innerText = settings.profRole || "Solusi digital terbaik untuk sekolah Anda.";
+            document.getElementById('footer-domisili').innerText = settings.domisili || "Indonesia";
+            document.getElementById('footer-wa').innerHTML = settings.wa ? "<a href='https://wa.me/" + settings.wa + "' target='_blank' class='text-decoration-none text-light fw-bold fs-6'>+" + settings.wa + "</a>" : "-";
+            document.getElementById('footer-email').innerHTML = settings.email ? "<a href='mailto:" + settings.email + "' target='_blank' class='text-decoration-none text-light fw-bold fs-6'>" + settings.email + "</a>" : "-";
+            if(settings.logoToko) { document.getElementById('footer-logo').src = settings.logoToko; document.getElementById('footer-logo').style.display = 'block'; }
+
+            var htmlSosmed = "";
+            if(settings.fb && String(settings.fb).trim() !== "") htmlSosmed += "<a href='https://facebook.com/" + settings.fb + "' class='social-btn' target='_blank'><i class='fa-brands fa-facebook-f'></i> " + settings.fb + "</a>";
+            if(settings.ig && String(settings.ig).trim() !== "") htmlSosmed += "<a href='https://instagram.com/" + settings.ig + "' class='social-btn' target='_blank'><i class='fa-brands fa-instagram'></i> " + settings.ig + "</a>";
+            if(settings.yt && String(settings.yt).trim() !== "") {
+                var ytName = String(settings.yt).replace('https://youtube.com/', '').replace('https://www.youtube.com/', '');
+                var ytLink = String(settings.yt).indexOf('http') > -1 ? settings.yt : "https://youtube.com/" + settings.yt;
+                htmlSosmed += "<a href='" + ytLink + "' class='social-btn' target='_blank'><i class='fa-brands fa-youtube text-danger'></i> " + ytName + "</a>";
+            }
+            if(settings.tt && String(settings.tt).trim() !== "") htmlSosmed += "<a href='https://tiktok.com/@" + settings.tt + "' class='social-btn' target='_blank'><i class='fa-brands fa-tiktok text-dark'></i> " + settings.tt + "</a>";
+            
+            var boxSosmed = document.getElementById('footer-social');
+            if(boxSosmed) boxSosmed.innerHTML = htmlSosmed;
+
+            if(settings.wa) { document.getElementById('btnWA_floating').href = "https://wa.me/" + settings.wa + "?text=Halo%20Admin,%20saya%20butuh%20bantuan."; document.getElementById('btnWA_floating').style.display = 'flex'; } 
+            else { document.getElementById('btnWA_floating').style.display = 'none'; }
+        } catch(e) { console.error("Error setting UI: ", e); }
+    }
+
+    function memuatPengaturan() {
+        let cachedSettings = localStorage.getItem('farySettings');
+        if(cachedSettings) {
+            try { renderPengaturan(JSON.parse(cachedSettings)); } catch(e) {}
+        }
+
+        gasAPI_GET('getAppSettings').then(settings => {
+            localStorage.setItem('farySettings', JSON.stringify(settings)); 
+            renderPengaturan(settings); 
+        }).catch(e => console.error(e));
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+
+    // 7. FUNGSI NAVIGASI MENU (HP & DESKTOP)
+    function setActiveNavMobile(viewId) {
+        document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
+        if(viewId === 'public' || viewId === 'detail') document.getElementById('bnav-home').classList.add('active');
+        if(viewId === 'cart') document.getElementById('bnav-cart').classList.add('active');
+        if(viewId === 'login' || viewId.includes('admin')) {
+            var prof = document.getElementById('bnav-prof');
+            if(prof) prof.classList.add('active');
+        }
+    }
+
+    function navTo(viewId) {
+        if(viewId === 'cart') { renderCartUI(); cartOffcanvasInstance.show(); return; }
+        setActiveNavMobile(viewId);
+
+        var views = document.querySelectorAll('.spa-view');
+        for(var i=0; i<views.length; i++) views[i].classList.remove('active');
+        
+        var targetView = document.getElementById('view-' + viewId);
+        if(targetView) targetView.classList.add('active');
+        
+        window.scrollTo({top: 0, behavior: 'smooth'});
+
+        if(viewId === 'admin-dashboard') loadDashboardStats();
+        if(viewId === 'admin-products') loadAdminTable();
+        if(viewId === 'admin-orders') loadAdminOrders(); 
+        
+        if(viewId === 'admin-settings') {
+            document.getElementById('set-heroJudul').value = appSettings.heroJudul || ''; document.getElementById('set-heroDeskripsi').value = appSettings.heroDeskripsi || ''; document.getElementById('set-promoText').value = appSettings.promoText || ''; document.getElementById('set-heroImage').value = appSettings.heroImage || ''; document.getElementById('set-logoToko').value = appSettings.logoToko || '';
+            if(appSettings.heroImage) { document.getElementById('preview-hero').src = appSettings.heroImage; document.getElementById('preview-hero').style.display = 'block'; }
+            if(appSettings.logoToko) { document.getElementById('preview-logo').src = appSettings.logoToko; document.getElementById('preview-logo').style.display = 'block'; }
+        }
+        if(viewId === 'admin-profile') {
+            document.getElementById('prof-nama').value = appSettings.profNama || ''; document.getElementById('prof-role').value = appSettings.profRole || ''; document.getElementById('prof-domisili').value = appSettings.domisili || ''; document.getElementById('prof-spesialisasi').value = appSettings.spesialisasi || ''; document.getElementById('prof-desc').value = appSettings.profDesc || ''; document.getElementById('prof-wa').value = appSettings.wa || ''; document.getElementById('prof-email').value = appSettings.email || ''; document.getElementById('prof-ig').value = appSettings.ig || ''; document.getElementById('prof-fb').value = appSettings.fb || ''; document.getElementById('prof-yt').value = appSettings.yt || ''; document.getElementById('prof-tt').value = appSettings.tt || ''; document.getElementById('prof-foto').value = appSettings.profFoto || '';
+            if(appSettings.profFoto) { document.getElementById('preview-prof').src = appSettings.profFoto; document.getElementById('preview-prof').style.display = 'block'; }
+        }
+    }
+
+    function bukaProfil() { document.getElementById('modalProfil').style.display = 'flex'; }
+    function bukaPrivasi() { new bootstrap.Modal(document.getElementById('modalPrivasi')).show(); }
+
+    // 8. TAMPILAN PRODUK 
+    function fetchProductsFromSheet() {
+        let cachedData = localStorage.getItem('faryProducts');
+        if(cachedData) {
+            try { dbProducts = JSON.parse(cachedData); if(dbProducts.length > 0) renderProduk(dbProducts); } catch(e){}
+        }
+
+        gasAPI_GET('getProducts').then(products => {
+            if(!products || products.status === 'error') {
+                document.getElementById('daftarProduk').innerHTML = "<div class='alert alert-danger mx-auto text-center w-75'>Gagal mengambil data dari database. Silakan Refresh.</div>";
+                return;
+            }
+            dbProducts = products; 
+            localStorage.setItem('faryProducts', JSON.stringify(dbProducts));
+            renderProduk(dbProducts); 
+        }).catch(e => {
+            document.getElementById('daftarProduk').innerHTML = "<div class='alert alert-danger mx-auto text-center w-75'>Koneksi terputus ke server.</div>";
+        });
+    }
+
+    function renderProduk(produkArray) {
+        var container = document.getElementById('daftarProduk'); 
+        if(!container) return;
+        
+        container.innerHTML = "";
+        if (produkArray.length === 0) { 
+            container.innerHTML = "<p style='grid-column: 1/-1; text-align:center;'>Belum ada produk untuk ditampilkan.</p>"; 
+            return; 
+        }
+        
+        var htmlTemplate = "";
+        for(var i=0; i<produkArray.length; i++) {
+            var p = produkArray[i];
+            var isOpsiSiswa = (p.opsiSiswa === true || p.opsiSiswa === 'true');
+            var hargaCoret = p.hCoret ? "<span class='text-decoration-line-through text-muted d-block' style='font-size:0.85rem;'>Rp " + Number(p.hCoret).toLocaleString('id-ID') + "</span>" : "";
+            var hargaTampil = isOpsiSiswa ? "<small class='text-muted'>Mulai</small> Rp 100.000" : ("Rp " + Number(p.hAsli).toLocaleString('id-ID'));
+            
+            var foto = p.fotoUrl ? p.fotoUrl.replace('sz=w1000', 'sz=w400') : "https://via.placeholder.com/300";
+            var textTombolBeli = isOpsiSiswa ? "Pilih Siswa" : "Masukkan Keranjang";
+
+            var actionHtml = 
+                "<button class='btn btn-info text-white w-100 fw-bold py-2 mb-2 shadow-sm' onclick=\"bukaDetail('" + p.id + "')\"><i class='fa-solid fa-eye'></i> Lihat Produk</button>" +
+                "<button class='btn w-100 fw-bold text-white py-2 shadow-sm' style='background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none;' onclick=\"" + (isOpsiSiswa ? "bukaDetail('" + p.id + "')" : "addToCart('" + p.id + "')") + "\"><i class='fa-solid fa-cart-plus'></i> " + textTombolBeli + "</button>";
+
+            htmlTemplate += "<div class='card-custom'><img src='" + foto + "' class='card-img-custom' loading='lazy'><div class='card-body-custom d-flex flex-column'><div class='card-title-custom'>" + p.nama + "</div><div class='mt-auto pt-3 border-top'><div class='text-center mb-3'>" + hargaCoret + "<span class='text-primary fw-bold fs-5'>" + hargaTampil + "</span></div>" + actionHtml + "</div></div></div>";
+        }
+        container.innerHTML = htmlTemplate;
+    }
+
+    function cariProduk(val) {
+        if(document.getElementById('view-public').classList.contains('active') === false) navTo('public'); 
+        document.getElementById('toko').scrollIntoView({behavior: 'smooth'}); 
+        var k = val.toLowerCase(); var hasil = [];
+        for(var i=0; i<dbProducts.length; i++) { 
+            if(dbProducts[i].nama.toLowerCase().indexOf(k) > -1 || dbProducts[i].detail.toLowerCase().indexOf(k) > -1) hasil.push(dbProducts[i]); 
+        }
+        renderProduk(hasil);
+    }
+
+    // 9. DETAIL PRODUK & ULASAN
+    function bukaDetail(id) {
+        var p = null; for(var i=0; i<dbProducts.length; i++) { if(dbProducts[i].id === id) p = dbProducts[i]; }
+        if(!p) return;
+        
+        document.getElementById('det-img').src = p.fotoUrl || "https://via.placeholder.com/400";
+        document.getElementById('det-nama').innerText = p.nama;
+        document.getElementById('det-harga-coret').innerText = p.hCoret ? "Rp " + Number(p.hCoret).toLocaleString('id-ID') : "";
+        document.getElementById('det-desc-singkat').innerText = p.detail;
+        document.getElementById('det-desc-lengkap').innerText = p.spesifikasi || p.detail || "Belum ada spesifikasi lengkap."; 
+        
+        var isOpsiSiswa = (p.opsiSiswa === true || p.opsiSiswa === 'true');
+        var btnBeli = document.getElementById('det-btn-beli');
+        var divOpsi = document.getElementById('det-opsi-siswa');
+        
+        if (isOpsiSiswa) {
+            document.getElementById('det-harga-asli').innerText = "Mulai Rp 100.000";
+            divOpsi.classList.remove('d-none');
+            document.getElementById('det-select-siswa').innerHTML = "<option value=''>Pilih Jml Siswa...</option><option value='100 Siswa|100000'>1-100 Siswa (100Rb)</option><option value='200 Siswa|200000'>101-200 Siswa (200Rb)</option><option value='300 Siswa|300000'>201-300 Siswa (300Rb)</option><option value='400 Siswa|400000'>301-400 Siswa (400Rb)</option><option value='500 Siswa|500000'>401-500 Siswa (500Rb)</option><option value='600 Siswa|600000'>501-600 Siswa (600Rb)</option><option value='700 Siswa|700000'>601-700 Siswa (700Rb)</option><option value='800 Siswa|800000'>701-800 Siswa (800Rb)</option><option value='900 Siswa|900000'>801-900 Siswa (900Rb)</option><option value='1000 Siswa|1000000'>901-1000 Siswa (1Jt)</option>";
+            
+            btnBeli.onclick = function() {
+                var val = document.getElementById('det-select-siswa').value;
+                if(!val) { Swal.fire('Perhatian', 'Silakan pilih jumlah siswa terlebih dahulu!', 'warning'); return; }
+                var valSplit = val.split("|"); var namaVarian = valSplit[0]; var hargaVarian = parseInt(valSplit[1]);
+                var cartIdVariant = p.id + "-" + namaVarian; 
+                var exist = false; for(var j=0; j<cart.length; j++) { if(cart[j].cartId === cartIdVariant) { cart[j].qty += 1; exist = true; } }
+                if(!exist) { var itemData = Object.assign({}, p); itemData.nama = p.nama + " (" + namaVarian + ")"; itemData.hAsli = hargaVarian; itemData.qty = 1; itemData.cartId = cartIdVariant; cart.push(itemData); }
+                saveCart(); updateCartBadge(); Swal.fire('Sukses', 'Produk masuk keranjang', 'success');
+            };
+        } else {
+            document.getElementById('det-harga-asli').innerText = "Rp " + Number(p.hAsli).toLocaleString('id-ID');
+            divOpsi.classList.add('d-none');
+            btnBeli.onclick = function() { addToCart(p.id); };
+        }
+
+        var btnVid = document.getElementById('det-btn-vid');
+        if(p.linkVid) { btnVid.href = p.linkVid; btnVid.classList.remove('d-none'); } else { btnVid.classList.add('d-none'); }
+        var btnDemo = document.getElementById('det-btn-demo');
+        if(p.linkDemo) { btnDemo.href = p.linkDemo; btnDemo.classList.remove('d-none'); } else { btnDemo.classList.add('d-none'); }
+
+        document.getElementById('ulas-prod-id').value = p.id;
+        document.getElementById('formUlasan').reset(); resetBintang();
+        loadUlasan(p.id);
+        navTo('detail');
+    }
+
+    let starVal = 0;
+    setTimeout(function() {
+        document.querySelectorAll('#star-container i').forEach(function(star) {
+            star.addEventListener('click', function() {
+                starVal = this.getAttribute('data-val');
+                document.getElementById('ulas-bintang').value = starVal;
+                document.querySelectorAll('#star-container i').forEach(function(s, index) {
+                    if (index < starVal) { s.classList.remove('fa-regular'); s.classList.add('fa-solid'); }
+                    else { s.classList.remove('fa-solid'); s.classList.add('fa-regular'); }
+                });
+            });
+        });
+    }, 1000);
+
+    function resetBintang() {
+        starVal = 0; if(document.getElementById('ulas-bintang')) document.getElementById('ulas-bintang').value = '';
+        document.querySelectorAll('#star-container i').forEach(s => { s.classList.remove('fa-solid'); s.classList.add('fa-regular'); });
+    }
+
+    function kirimUlasan(e) {
+        e.preventDefault();
+        if(starVal == 0) { Swal.fire('Perhatian', 'Tolong berikan penilaian bintang terlebih dahulu!', 'warning'); return; }
+        var btn = document.getElementById('btn-kirim-ulasan'); btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Menyimpan..."; btn.disabled = true;
+        var dataUlasan = { prodId: document.getElementById('ulas-prod-id').value, nama: document.getElementById('ulas-nama').value, wa: document.getElementById('ulas-wa').value, kota: document.getElementById('ulas-kota').value, bintang: starVal, komentar: document.getElementById('ulas-teks').value };
+        
+        gasAPI_POST({ action: 'saveReview', reviewData: dataUlasan }).then(res => {
+            btn.innerHTML = "<i class='fa-solid fa-paper-plane'></i> Kirim Ulasan"; btn.disabled = false;
+            if(res.status === 'success') { Swal.fire('Terima Kasih!', 'Ulasan berhasil dikirim.', 'success'); document.getElementById('formUlasan').reset(); resetBintang(); loadUlasan(dataUlasan.prodId); } 
+            else { Swal.fire('Gagal', res.message, 'error'); }
+        }).catch(err => {
+            btn.innerHTML = "<i class='fa-solid fa-paper-plane'></i> Kirim Ulasan"; btn.disabled = false;
+            Swal.fire('Error', 'Koneksi ke server gagal.', 'error');
+        });
+    }
+
+    function loadUlasan(prodId) {
+        var container = document.getElementById('list-ulasan'); if(!container) return; 
+        container.innerHTML = "<div class='text-center text-muted mt-4'><i class='fa-solid fa-spinner fa-spin fs-3'></i><br>Memuat ulasan...</div>";
+        gasAPI_GET('getReviews', `&prodId=${prodId}`).then(ulasanArray => {
+            if(ulasanArray.length === 0 || ulasanArray.status === 'error') { container.innerHTML = "<div class='alert alert-secondary text-center border mt-2'>Belum ada ulasan untuk produk ini.</div>"; return; }
+            var html = "";
+            for(var i=0; i<ulasanArray.length; i++) {
+                var u = ulasanArray[i]; var starsHtml = "";
+                for(var s=1; s<=5; s++) { starsHtml += (s <= u.bintang) ? "<i class='fa-solid fa-star text-warning'></i>" : "<i class='fa-regular fa-star text-warning'></i>"; }
+                var waSensor = u.wa.toString();
+                if(waSensor.length > 6) waSensor = waSensor.substring(0,4) + "****" + waSensor.substring(waSensor.length-2); else waSensor = "No WA Disembunyikan";
+                html += "<div class='card border mb-3 rounded-4 shadow-sm'><div class='card-body'><div class='d-flex justify-content-between mb-2'><div><h6 class='fw-bold mb-0 text-dark'>" + u.nama + " <span class='badge bg-light border text-dark ms-1 fw-normal'><i class='fa-solid fa-location-dot'></i> " + u.kota + "</span></h6><small class='text-muted' style='font-size:0.75rem;'>" + waSensor + " • " + u.tanggal + "</small></div><div class='fs-6 text-nowrap'>" + starsHtml + "</div></div><p class='mb-0 text-secondary' style='font-size:0.9rem; line-height: 1.5;'>" + u.komentar + "</p></div></div>";
+            }
+            container.innerHTML = html;
+        }).catch(err => { container.innerHTML = "<div class='alert alert-danger'>Gagal memuat ulasan.</div>"; });
+    }
+
+    // 10. FUNGSI KERANJANG & CHECKOUT
+    function addToCart(productId) {
+        var prod = null; for(var i=0; i<dbProducts.length; i++) { if(dbProducts[i].id === productId) prod = dbProducts[i]; }
+        if(!prod) return;
+        var exist = false; for(var j=0; j<cart.length; j++) { if(cart[j].cartId === productId) { cart[j].qty += 1; exist = true; } }
+        if(!exist) { var itemData = Object.assign({}, prod); itemData.qty = 1; itemData.cartId = productId; cart.push(itemData); }
+        saveCart(); updateCartBadge();
+        Swal.fire({ title: 'Sukses', text: 'Produk masuk keranjang', icon: 'success', timer: 1500, showConfirmButton: false });
+    }
+
+    function updateCartBadge() {
+        var totalCount = 0; for(var k=0; k<cart.length; k++) totalCount += cart[k].qty;
+        var badges = document.querySelectorAll('.cart-badge-count');
+        for(var i=0; i<badges.length; i++) { badges[i].innerText = totalCount; }
+    }
+
+    function renderCartUI() {
+        var container = document.getElementById('cart-items-container');
+        var btnCheckout = document.getElementById('btn-checkout');
+        var txtTotal = document.getElementById('cart-total');
+        var boxData = document.getElementById('cart-data-pemesan');
+        
+        if(cart.length === 0) {
+            container.innerHTML = "<div class='text-center mt-5'><i class='fa-solid fa-cart-arrow-down fs-1 text-muted mb-3'></i><p class='text-muted'>Keranjang kosong.</p></div>"; 
+            btnCheckout.classList.add('d-none'); txtTotal.classList.add('d-none'); boxData.classList.add('d-none'); return;
+        }
+
+        var htmlList = "<ul class='list-group mb-3 shadow-sm border-0'>"; var totalValue = 0;
+        for(var i=0; i<cart.length; i++) {
+            var item = cart[i]; var subtotal = item.hAsli * item.qty; totalValue += subtotal;
+            htmlList += "<li class='list-group-item d-flex justify-content-between lh-sm align-items-center bg-light border-0 mb-2 rounded'><div><h6 class='my-0' style='font-size:0.9rem; color:#1e1b4b; font-weight:700;'>" + item.nama + "</h6><small class='text-muted'>Rp " + Number(item.hAsli).toLocaleString('id-ID') + " x " + item.qty + "</small></div><div class='text-end'><span class='text-primary fw-bold d-block mb-1' style='font-size:0.9rem;'>Rp " + subtotal.toLocaleString('id-ID') + "</span><button class='btn btn-sm btn-outline-danger' onclick='hapusDariKeranjang(" + i + ")'><i class='fa-solid fa-trash'></i></button></div></li>";
+        }
+        container.innerHTML = htmlList + "</ul>";
+        txtTotal.innerText = "Total: Rp " + totalValue.toLocaleString('id-ID');
+        txtTotal.classList.remove('d-none'); btnCheckout.classList.remove('d-none'); boxData.classList.remove('d-none');
+    }
+
+    function hapusDariKeranjang(index) { cart.splice(index, 1); saveCart(); updateCartBadge(); renderCartUI(); }
+
+    function bukaModalPemesan() {
+        document.getElementById('co-nama').value = document.getElementById('cart-in-nama').value;
+        document.getElementById('co-wa').value = document.getElementById('cart-in-wa').value;
+        document.getElementById('co-instansi').value = document.getElementById('cart-in-instansi').value;
+        document.getElementById('co-kota').value = document.getElementById('cart-in-kota').value;
+        checkoutModalInstance.show();
+    }
+
+    function simpanDataPemesan(e) {
+        e.preventDefault();
+        document.getElementById('cart-in-nama').value = document.getElementById('co-nama').value;
+        document.getElementById('cart-in-wa').value = document.getElementById('co-wa').value;
+        document.getElementById('cart-in-instansi').value = document.getElementById('co-instansi').value;
+        document.getElementById('cart-in-kota').value = document.getElementById('co-kota').value;
+        
+        checkoutModalInstance.hide(); 
+        Swal.fire({ icon: 'success', title: 'Data Disimpan', text: 'Silakan klik Checkout & Kirim', timer: 1500, showConfirmButton: false });
+    }
+
+    function prosesKirimWA(e) {
+        e.preventDefault();
+        var namaUser = document.getElementById('cart-in-nama').value; 
+        var waUser = document.getElementById('cart-in-wa').value; 
+        var instansiUser = document.getElementById('cart-in-instansi').value; 
+        var kotaUser = document.getElementById('cart-in-kota').value;
+        
+        if(!namaUser || !kotaUser || !waUser) { 
+            bukaModalPemesan(); 
+            setTimeout(function() { Swal.fire('Data Belum Lengkap', 'Isi Nama, Nomor WA, dan Kota domisili terlebih dahulu.', 'warning'); }, 300);
+            return; 
+        }
+
+        var buyerInfo = { nama: namaUser, wa: waUser, instansi: instansiUser, kota: kotaUser };
+        var btn = e.target; var originalText = btn.innerHTML; btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Memproses..."; btn.disabled = true;
+
+        gasAPI_POST({ action: 'saveOrderData', buyerInfo: buyerInfo, cartItems: cart }).then(res => {
+            btn.innerHTML = originalText; btn.disabled = false;
+            if(res.status === 'success') {
+                var waAdmin = appSettings.wa || "000";
+                var pesanWA = "Halo Admin " + (appSettings.profNama||"") + ", saya melakukan pemesanan via Web.%0A%0A*DATA PEMESAN*%0ANama: " + namaUser + "%0AWA: " + waUser + "%0A";
+                if(instansiUser) pesanWA += "Instansi: " + instansiUser + "%0A";
+                pesanWA += "Kota: " + kotaUser + "%0A%0A*DETAIL PESANAN*%0A";
+                var totalValue = 0;
+                for(var x=0; x<cart.length; x++) { pesanWA += "- " + cart[x].nama + " (" + cart[x].qty + "x)%0A"; totalValue += (cart[x].hAsli * cart[x].qty); }
+                pesanWA += "%0A*Total: Rp " + totalValue.toLocaleString('id-ID') + "*%0A%0AMohon panduannya untuk proses pembayaran.";
+
+                cart = []; saveCart(); updateCartBadge(); 
+                cartOffcanvasInstance.hide();
+                
+                document.getElementById('cart-in-nama').value = ""; document.getElementById('cart-in-wa').value = ""; document.getElementById('cart-in-instansi').value = ""; document.getElementById('cart-in-kota').value = "";
+                fetchBuyersTicker(); 
+                window.open("https://wa.me/" + waAdmin + "?text=" + pesanWA, '_blank');
+            } else { Swal.fire('Gagal Menyimpan', res.message, 'error'); }
+        }).catch(err => {
+            btn.innerHTML = originalText; btn.disabled = false; 
+            Swal.fire('Koneksi Terputus', err.message || 'Gagal tersambung ke server', 'error'); 
+        });
+    }
+
+
+    // 11. FUNGSI ADMIN
+    function handleLogin(e) {
+        e.preventDefault(); 
+        var loadData = mulaiLoadingBtn('btnLog', 'Masuk');
+        gasAPI_POST({ action: 'loginUser', email: document.getElementById('logEmail').value, password: document.getElementById('logPass').value }).then(res => {
+            stopLoadingBtn(loadData);
+            if(res.status === 'success') { currentUser = res.user; localStorage.setItem('faryUser', JSON.stringify(currentUser)); Swal.fire('Berhasil', 'Selamat datang', 'success'); navTo('admin-dashboard'); } 
+            else { Swal.fire('Gagal', res.message, 'error'); } 
+        }).catch(err => { stopLoadingBtn(loadData); Swal.fire('Error', 'Gagal tersambung', 'error'); });
+    }
+
+    function logout() { currentUser = null; localStorage.removeItem('faryUser'); navTo('public'); }
+
+    function loadDashboardStats() { 
+        gasAPI_POST({ action: 'getDashboardStats', auth: currentUser }).then(s => {
+            document.getElementById('stat-prod').innerText = s.totalProducts || 0; 
+            document.getElementById('stat-user').innerText = s.totalUsers || 0; 
+            document.getElementById('stat-order').innerText = s.totalOrders || 0; 
+        }); 
+    }
+
+    function loadAdminOrders() {
+        var tbody = document.getElementById('table-orders-body'); tbody.innerHTML = "<tr><td colspan='9' class='text-center'><i class='fa-solid fa-spinner fa-spin'></i> Mengambil data pemesanan...</td></tr>";
+        gasAPI_POST({ action: 'getOrders', auth: currentUser }).then(orders => {
+            tbody.innerHTML = ""; if(!orders || orders.length === 0) { tbody.innerHTML = "<tr><td colspan='9' class='text-center'>Belum ada pesanan masuk.</td></tr>"; return; }
+            var rowHtml = ""; var sumQty = 0; var sumRp = 0;
+            for(var i=0; i<orders.length; i++) {
+                var o = orders[i]; var badgeColor = o.status === 'Selesai' ? 'bg-success' : (o.status === 'Proses' ? 'bg-warning text-dark' : 'bg-secondary');
+                var actionBtn = "<select class='form-select form-select-sm' onchange=\"ubahStatusOrder(" + o.rowIdx + ", this.value)\"><option value='Pending' " + (o.status==='Pending'?'selected':'') + ">Pending</option><option value='Proses' " + (o.status==='Proses'?'selected':'') + ">Proses</option><option value='Selesai' " + (o.status==='Selesai'?'selected':'') + ">Selesai</option></select>";
+                sumQty += parseInt(o.qty) || 0; sumRp += parseInt(o.total) || 0;
+                rowHtml += "<tr><td><small>" + o.tanggal + "</small></td><td><a href='https://wa.me/" + o.wa + "' target='_blank' class='text-decoration-none fw-bold text-success'><i class='fa-brands fa-whatsapp'></i> " + o.wa + "</a></td><td><b>" + o.nama + "</b><br><small class='text-muted'>" + o.instansi + "</small></td><td>" + o.kota + "</td><td>" + o.produk + "</td><td>" + o.qty + "</td><td>Rp " + Number(o.total).toLocaleString('id-ID') + "</td><td><span class='badge " + badgeColor + "'>" + o.status + "</span></td><td>" + actionBtn + "</td></tr>";
+            }
+            rowHtml += "<tr class='table-warning text-dark fs-6'><td colspan='5' class='text-end fw-bold pt-3 pb-3'>TOTAL KESELURUHAN:</td><td class='fw-bold pt-3 pb-3'>" + sumQty + "</td><td class='fw-bold text-danger pt-3 pb-3'>Rp " + sumRp.toLocaleString('id-ID') + "</td><td colspan='2'></td></tr>";
+            tbody.innerHTML = rowHtml;
+        });
+    }
+
+    function ubahStatusOrder(rowIdx, newVal) { 
+        var inter = tampilSwalLoading('Memperbarui Status');
+        gasAPI_POST({ action: 'updateOrderStatus', auth: currentUser, rowIdx: rowIdx, newStatus: newVal }).then(res => {
+            clearInterval(inter); Swal.fire('Sukses', 'Status diperbarui', 'success'); loadAdminOrders(); 
+        });
+    }
+
+    function loadAdminTable() {
+        var tbody = document.getElementById('table-produk-body'); tbody.innerHTML = "<tr><td colspan='5' class='text-center'><i class='fa-solid fa-spinner fa-spin'></i> Memuat data...</td></tr>";
+        gasAPI_GET('getProducts').then(products => {
+            tbody.innerHTML = ""; if(!products || products.length === 0 || products.status === 'error') { tbody.innerHTML = "<tr><td colspan='5' class='text-center'>Belum ada produk</td></tr>"; return; }
+            var rowHtml = "";
+            for(var i=0; i<products.length; i++) {
+                var p = products[i]; var sysInfo = (p.opsiSiswa === true || p.opsiSiswa === 'true') ? "<span class='badge bg-warning text-dark'>Opsi Siswa</span>" : "<span class='badge bg-secondary'>Harga Pas</span>";
+                var actionBtns = "<button class='btn btn-sm btn-info text-white me-1 mb-1' onclick=\"editProduct('" + p.id + "')\"><i class='fa-solid fa-pen'></i></button><button class='btn btn-sm btn-danger mb-1' onclick=\"hapusProduct('" + p.id + "')\"><i class='fa-solid fa-trash'></i></button>";
+                var thumbnailUrl = p.fotoUrl ? p.fotoUrl.replace('sz=w1000', 'sz=w50') : "https://via.placeholder.com/50";
+                rowHtml += "<tr><td><img src='" + thumbnailUrl + "' width='40' height='40' style='object-fit:cover; border-radius:5px;'></td><td>" + p.nama + "</td><td>Rp " + Number(p.hAsli).toLocaleString('id-ID') + "</td><td>" + sysInfo + "</td><td>" + actionBtns + "</td></tr>";
+            }
+            tbody.innerHTML = rowHtml;
+        });
+    }
+
+    function editProduct(id) {
+        var p = null; for(var i=0; i<dbProducts.length; i++) { if(dbProducts[i].id === id) p = dbProducts[i]; }
+        if(!p) return;
+        document.getElementById('prod-id').value = p.id; document.getElementById('prod-nama').value = p.nama; document.getElementById('prod-detail').value = p.detail; document.getElementById('prod-spesifikasi').value = p.spesifikasi || ''; document.getElementById('prod-hCoret').value = p.hCoret || ''; document.getElementById('prod-hAsli').value = p.hAsli; document.getElementById('prod-hMidtrans').value = p.hMidtrans || ''; document.getElementById('prod-linkDemo').value = p.linkDemo || ''; document.getElementById('prod-linkVid').value = p.linkVid || ''; document.getElementById('prod-fotoUrl').value = p.fotoUrl || ''; document.getElementById('prod-opsiSiswa').checked = (p.opsiSiswa === true || p.opsiSiswa === 'true');
+        base64Images.prod = null; if(p.fotoUrl) { document.getElementById('preview-prod').src = p.fotoUrl; document.getElementById('preview-prod').style.display = 'block'; } else { document.getElementById('preview-prod').style.display = 'none'; } modalProd.show();
+    }
+
+    function hapusProduct(id) { 
+        Swal.fire({ title: 'Yakin Menghapus?', text: "Produk dihapus permanen!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'Ya, Hapus!' }).then(function(result) { 
+            if (result.isConfirmed) { 
+                var inter = tampilSwalLoading('Menghapus Produk');
+                gasAPI_POST({ action: 'deleteProduct', auth: currentUser, productId: id }).then(res => {
+                    clearInterval(inter);
+                    if(res.status === 'success') { Swal.fire('Terhapus!', 'Produk dihapus.', 'success'); fetchProductsFromSheet(); loadAdminTable(); } 
+                    else { Swal.fire('Gagal', res.message, 'error'); } 
+                });
+            } 
+        }); 
+    }
+
+    function saveSettings(e) { 
+        e.preventDefault(); 
+        var loadData = mulaiLoadingBtn('btnSaveSet', "<i class='fa-solid fa-save'></i> Simpan Pengaturan");
+        var data = { heroJudul: document.getElementById('set-heroJudul').value, heroDeskripsi: document.getElementById('set-heroDeskripsi').value, promoText: document.getElementById('set-promoText').value, heroImage: document.getElementById('set-heroImage').value, logoToko: document.getElementById('set-logoToko').value }; 
+        gasAPI_POST({ action: 'saveAppSettings', auth: currentUser, newSettings: data, base64Images: base64Images }).then(res => {
+            stopLoadingBtn(loadData);
+            if(res.status === 'success') { base64Images.hero = null; base64Images.logo = null; Swal.fire('Sukses', 'Diperbarui!', 'success'); memuatPengaturan(); } 
+            else { Swal.fire('Gagal', res.message, 'error'); } 
+        });
+    }
+
+    function saveProfile(e) { 
+        e.preventDefault(); 
+        var loadData = mulaiLoadingBtn('btnSaveProf', "<i class='fa-solid fa-save'></i> Simpan Profil");
+        var data = { profNama: document.getElementById('prof-nama').value, profRole: document.getElementById('prof-role').value, domisili: document.getElementById('prof-domisili').value, spesialisasi: document.getElementById('prof-spesialisasi').value, profDesc: document.getElementById('prof-desc').value, wa: document.getElementById('prof-wa').value, email: document.getElementById('prof-email').value, ig: document.getElementById('prof-ig').value, fb: document.getElementById('prof-fb').value, yt: document.getElementById('prof-yt').value, tt: document.getElementById('prof-tt').value, profFoto: document.getElementById('prof-foto').value }; 
+        gasAPI_POST({ action: 'saveAppSettings', auth: currentUser, newSettings: data, base64Images: base64Images }).then(res => {
+            stopLoadingBtn(loadData);
+            if(res.status === 'success') { base64Images.prof = null; Swal.fire('Sukses', 'Diperbarui!', 'success'); memuatPengaturan(); } 
+            else { Swal.fire('Gagal', res.message, 'error'); } 
+        });
+    }
+
+    var modalCrop, modalProd;
+    window.addEventListener('DOMContentLoaded', function() { modalCrop = new bootstrap.Modal(document.getElementById('modalCrop')); modalProd = new bootstrap.Modal(document.getElementById('modalProduct')); });
+    function openModalProduct() { document.getElementById('formProduct').reset(); document.getElementById('prod-id').value = ''; document.getElementById('prod-spesifikasi').value = ''; base64Images.prod = null; document.getElementById('preview-prod').style.display = 'none'; modalProd.show(); }
+    function triggerCrop(e, target) { currentCropTarget = target; var file = e.target.files[0]; if (file) { var reader = new FileReader(); reader.onload = function(event) { document.getElementById('crop-image-container').src = event.target.result; modalCrop.show(); document.getElementById('modalCrop').addEventListener('shown.bs.modal', function () { if(cropper) cropper.destroy(); var aspect = (target === 'hero') ? 16/9 : 1/1; cropper = new Cropper(document.getElementById('crop-image-container'), { aspectRatio: aspect, viewMode: 1 }); }, {once: true}); }; reader.readAsDataURL(file); } }
+    function applyCrop() { if(cropper) { var w = (currentCropTarget === 'hero') ? 800 : 500; var h = (currentCropTarget === 'hero') ? 450 : 500; var canvas = cropper.getCroppedCanvas({ width: w, height: h }); var base64 = canvas.toDataURL('image/png'); base64Images[currentCropTarget] = base64; var preview = document.getElementById('preview-' + currentCropTarget); if(preview) { preview.src = base64; preview.style.display = 'block'; } modalCrop.hide(); } }
+    function cancelCrop() { document.getElementById(currentCropTarget + '-file').value = ""; base64Images[currentCropTarget] = null; modalCrop.hide(); }
+    
+    function submitProduct() { 
+        var loadData = mulaiLoadingBtn('btnSaveProd', "<i class='fa-solid fa-save'></i> Simpan");
+        var productData = { id: document.getElementById('prod-id').value, nama: document.getElementById('prod-nama').value, detail: document.getElementById('prod-detail').value, spesifikasi: document.getElementById('prod-spesifikasi').value, hCoret: document.getElementById('prod-hCoret').value, hAsli: document.getElementById('prod-hAsli').value, hMidtrans: document.getElementById('prod-hMidtrans').value, linkDemo: document.getElementById('prod-linkDemo').value, linkVid: document.getElementById('prod-linkVid').value, fotoUrl: document.getElementById('prod-fotoUrl').value, opsiSiswa: document.getElementById('prod-opsiSiswa').checked }; 
+        gasAPI_POST({ action: 'saveProduct', auth: currentUser, productData: productData, base64Image: base64Images.prod }).then(res => {
+            stopLoadingBtn(loadData);
+            if(res.status === 'success') { base64Images.prod = null; modalProd.hide(); Swal.fire('Berhasil', 'Produk disimpan', 'success'); fetchProductsFromSheet(); loadAdminTable(); } 
+            else { Swal.fire('Gagal', res.message, 'error'); } 
+        });
+    }
+
+</script>
+
+</body>
+</html>
