@@ -395,6 +395,10 @@ input, button, select, textarea {
                             <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 shadow-sm" style="width:50px; height:50px; font-size:1.5rem;"><i class="fa-brands fa-facebook-f"></i></div>
                             <small class="fw-bold text-muted">Facebook</small>
                         </div>
+                        <div class="text-center" style="cursor:pointer;" onclick="shareKe('tg')">
+                             <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 shadow-sm" style="width:50px; height:50px; font-size:1.5rem;"><i class="fa-brands fa-telegram"></i></div>
+                             <small class="fw-bold text-muted">Telegram</small>
+                        </div>
                         <div class="text-center" style="cursor:pointer;" onclick="shareKe('x')">
                             <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 shadow-sm" style="width:50px; height:50px; font-size:1.5rem;"><i class="fa-brands fa-x-twitter"></i></div>
                             <small class="fw-bold text-muted">X (Twitter)</small>
@@ -1177,7 +1181,7 @@ input, button, select, textarea {
 function shareKe(platform) {
     // Membuat URL unik (Contoh: https://domainmu.com/?produk=ID123)
     var urlLink = window.location.origin + window.location.pathname + "?produk=" + currentViewedProductId;
-    var teksJudul = "Salam Inovasi. Yuuk cek produk canggih ini. Buruaan...!! sedang diskon loh: " + document.getElementById('det-nama').innerText;
+    var teksJudul = "Cek produk keren ini: " + document.getElementById('det-nama').innerText;
 
     if(platform === 'wa') {
         window.open("https://wa.me/?text=" + encodeURIComponent(teksJudul + " - " + urlLink), "_blank");
@@ -1185,6 +1189,12 @@ function shareKe(platform) {
         window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(urlLink), "_blank");
     } else if(platform === 'x') {
         window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(teksJudul) + "&url=" + encodeURIComponent(urlLink), "_blank");
+    
+    // --- KODE BARU UNTUK TELEGRAM ---
+    } else if(platform === 'tg') {
+        window.open("https://t.me/share/url?url=" + encodeURIComponent(urlLink) + "&text=" + encodeURIComponent(teksJudul), "_blank");
+    // --------------------------------
+
     } else if(platform === 'copy') {
         navigator.clipboard.writeText(urlLink).then(function() {
             Swal.fire({icon: 'success', title: 'Link Disalin!', text: 'Silakan paste di TikTok, IG, atau Threads.', timer: 2000, showConfirmButton: false});
