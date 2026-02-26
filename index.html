@@ -20,9 +20,10 @@
 
 
     <link rel="icon" type="image/png" href="./logo.png">
-    <link rel="manifest" href="./manifest.json?v=2">
+    <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#4f46e5">
     <link rel="apple-touch-icon" href="./logo.png">
+    
     
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet"/>
@@ -174,8 +175,24 @@ input, button, select, textarea {
         </div>
 
         <div class="d-md-none ms-auto d-flex align-items-center gap-3">
-            <a href="javascript:void(0)" id="nav-btn-login-mobile" onclick="navTo('login')" class="text-dark fs-5"><i class="fa-solid fa-lock"></i></a>
-            <a href="javascript:void(0)" class="admin-only d-none text-info fs-5" onclick="navTo('admin-dashboard')"><i class="fa-solid fa-gauge-high"></i></a>
+            <a href="javascript:void(0)" id="nav-btn-login-mobile" onclick="navTo('login')" class="text-dark fs-5">
+                <i class="fa-solid fa-lock"></i>
+            </a>
+            
+            <div class="dropdown admin-only d-none">
+                <a href="#" class="text-dark fs-4 text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 mt-2" style="font-size: 0.95rem; min-width: 200px;">
+                    <li><h6 class="dropdown-header text-primary fw-bold">Menu Admin</h6></li>
+                    <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="navTo('admin-dashboard')"><i class="fa-solid fa-gauge-high text-info me-2" style="width: 20px; text-align: center;"></i> Dashboard</a></li>
+                    <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="navTo('admin-orders')"><i class="fa-solid fa-clipboard-list text-primary me-2" style="width: 20px; text-align: center;"></i> Pesanan Baru</a></li>
+                    <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="navTo('admin-products')"><i class="fa-solid fa-box text-success me-2" style="width: 20px; text-align: center;"></i> Katalog</a></li>
+                    <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="navTo('admin-settings')"><i class="fa-solid fa-gear text-secondary me-2" style="width: 20px; text-align: center;"></i> Pengaturan</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item py-2 text-danger fw-bold" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-right-from-bracket me-2" style="width: 20px; text-align: center;"></i> Keluar</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
@@ -1207,8 +1224,8 @@ function shareKe(platform) {
 }
 
 </script>
-
-    <script>
+// ini menghubungkan ke APK 
+<script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
           navigator.serviceWorker.register('./service-worker.js')
