@@ -255,6 +255,7 @@ input, button, select, textarea {
                     <button class="btn fw-bold text-white px-4 py-2 shadow-sm" style="background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none;" id="det-btn-beli"><i class="fa-solid fa-cart-plus"></i> MASUKKAN KERANJANG</button>
                     <a href="#" id="det-btn-vid" target="_blank" class="btn btn-outline-danger fw-bold px-3 py-2 d-none shadow-sm"><i class="fa-brands fa-youtube"></i> Video Tutorial</a>
                     <a href="#" id="det-btn-demo" target="_blank" class="btn btn-outline-info fw-bold px-3 py-2 d-none shadow-sm"><i class="fa-solid fa-laptop-code"></i> Uji Coba (Demo)</a>
+                    <button id="det-btn-share" onclick="bukaModalShare()" class="btn btn-outline-secondary fw-bold px-3 py-2 shadow-sm"><i class="fa-solid fa-share-nodes"></i> Bagikan</button>
                 </div>
             </div>
         </div>
@@ -372,6 +373,40 @@ input, button, select, textarea {
                 </div>
                 <div class="modal-footer border-top-0 p-3 bg-light rounded-bottom-4">
                     <button type="button" class="btn btn-primary fw-bold w-100 py-2 shadow-sm rounded-pill" data-bs-dismiss="modal">Saya Paham & Setuju</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalShare" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold fs-6"><i class="fa-solid fa-share-nodes text-primary"></i> Bagikan Produk</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center pt-3 pb-4">
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <div class="text-center" style="cursor:pointer;" onclick="shareKe('wa')">
+                            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 shadow-sm" style="width:50px; height:50px; font-size:1.5rem;"><i class="fa-brands fa-whatsapp"></i></div>
+                            <small class="fw-bold text-muted">WhatsApp</small>
+                        </div>
+                        <div class="text-center" style="cursor:pointer;" onclick="shareKe('fb')">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 shadow-sm" style="width:50px; height:50px; font-size:1.5rem;"><i class="fa-brands fa-facebook-f"></i></div>
+                            <small class="fw-bold text-muted">Facebook</small>
+                        </div>
+                        <div class="text-center" style="cursor:pointer;" onclick="shareKe('x')">
+                            <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 shadow-sm" style="width:50px; height:50px; font-size:1.5rem;"><i class="fa-brands fa-x-twitter"></i></div>
+                            <small class="fw-bold text-muted">X (Twitter)</small>
+                        </div>
+                        <div class="text-center" style="cursor:pointer;" onclick="shareKe('copy')">
+                            <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 shadow-sm" style="width:50px; height:50px; font-size:1.5rem;"><i class="fa-solid fa-link"></i></div>
+                            <small class="fw-bold text-muted">Salin Link</small>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-muted" style="font-size: 0.75rem; line-height: 1.4;">
+                        *Untuk IG, TikTok, dan Threads, silakan gunakan fitur <b>Salin Link</b> lalu paste di aplikasi Anda.
+                    </div>
                 </div>
             </div>
         </div>
@@ -675,6 +710,34 @@ input, button, select, textarea {
             dbProducts = products; 
             localStorage.setItem('faryProducts', JSON.stringify(dbProducts));
             renderProduk(dbProducts); 
+
+            gasAPI_GET('getProducts').then(products => {
+            if(!products || products.status === 'error') {
+                document.getElementById('daftarProduk').innerHTML = "<div class='alert alert-danger mx-auto text-center w-75'>Gagal mengambil data dari database. Silakan Refresh.</div>";
+                return;
+            }
+            dbProducts = products; 
+            localStorage.setItem('faryProducts', JSON.stringify(dbProducts));
+            renderProduk(dbProducts); 
+
+            // --- KODE BARU: Deteksi Link dan Bersihkan URL ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const produkIdDilihat = urlParams.get('produk');
+            
+            if (produkIdDilihat) {
+                // Buka detail jika ID cocok
+                var cekAda = dbProducts.find(x => x.id === produkIdDilihat);
+                if(cekAda) {
+                    setTimeout(function() { bukaDetail(produkIdDilihat); }, 500); 
+                }
+                // Hapus tulisan ?produk=xxx dari kolom alamat (Address bar) tanpa reload
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+            // ------------------------------------------------
+
+        }).catch(e => {
+            // ...
+
         }).catch(e => {
             document.getElementById('daftarProduk').innerHTML = "<div class='alert alert-danger mx-auto text-center w-75'>Koneksi terputus ke server.</div>";
         });
@@ -721,7 +784,10 @@ input, button, select, textarea {
 
     // 9. DETAIL PRODUK & ULASAN
     function bukaDetail(id) {
-        var p = null; for(var i=0; i<dbProducts.length; i++) { if(dbProducts[i].id === id) p = dbProducts[i]; }
+    currentViewedProductId = id; // Simpan ID produk ke memori
+    
+    var p = null; for(var i=0; i<dbProducts.length; i++) { if(dbProducts[i].id === id) p = dbProducts[i]; }
+
         if(!p) return;
         
         document.getElementById('det-img').src = p.fotoUrl || "https://via.placeholder.com/400";
@@ -1042,10 +1108,14 @@ input, button, select, textarea {
         });
     }
 
-    var modalCrop, modalProd, quill; // Tambahkan variabel quill
-    window.addEventListener('DOMContentLoaded', function() { 
-        modalCrop = new bootstrap.Modal(document.getElementById('modalCrop')); 
-        modalProd = new bootstrap.Modal(document.getElementById('modalProduct')); 
+    var modalCrop, modalProd, modalShareInstance;
+var currentViewedProductId = ""; // Untuk menyimpan ID yang sedang dilihat
+
+window.addEventListener('DOMContentLoaded', function() { 
+    modalCrop = new bootstrap.Modal(document.getElementById('modalCrop')); 
+    modalProd = new bootstrap.Modal(document.getElementById('modalProduct')); 
+    modalShareInstance = new bootstrap.Modal(document.getElementById('modalShare')); 
+});
         
         // Mengaktifkan Quill Editor
         quill = new Quill('#editor-container', {
@@ -1078,6 +1148,29 @@ input, button, select, textarea {
             else { Swal.fire('Gagal', res.message, 'error'); } 
         });
     }
+
+    function bukaModalShare() {
+    modalShareInstance.show();
+}
+
+function shareKe(platform) {
+    // Membuat URL unik (Contoh: https://domainmu.com/?produk=ID123)
+    var urlLink = window.location.origin + window.location.pathname + "?produk=" + currentViewedProductId;
+    var teksJudul = "Cek produk keren ini: " + document.getElementById('det-nama').innerText;
+
+    if(platform === 'wa') {
+        window.open("https://wa.me/?text=" + encodeURIComponent(teksJudul + " - " + urlLink), "_blank");
+    } else if(platform === 'fb') {
+        window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(urlLink), "_blank");
+    } else if(platform === 'x') {
+        window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(teksJudul) + "&url=" + encodeURIComponent(urlLink), "_blank");
+    } else if(platform === 'copy') {
+        navigator.clipboard.writeText(urlLink).then(function() {
+            Swal.fire({icon: 'success', title: 'Link Disalin!', text: 'Silakan paste di TikTok, IG, atau Threads.', timer: 2000, showConfirmButton: false});
+        });
+    }
+    modalShareInstance.hide();
+}
 
 </script>
 
