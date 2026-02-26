@@ -711,15 +711,6 @@ input, button, select, textarea {
             localStorage.setItem('faryProducts', JSON.stringify(dbProducts));
             renderProduk(dbProducts); 
 
-            gasAPI_GET('getProducts').then(products => {
-            if(!products || products.status === 'error') {
-                document.getElementById('daftarProduk').innerHTML = "<div class='alert alert-danger mx-auto text-center w-75'>Gagal mengambil data dari database. Silakan Refresh.</div>";
-                return;
-            }
-            dbProducts = products; 
-            localStorage.setItem('faryProducts', JSON.stringify(dbProducts));
-            renderProduk(dbProducts); 
-
             // --- KODE BARU: Deteksi Link dan Bersihkan URL ---
             const urlParams = new URLSearchParams(window.location.search);
             const produkIdDilihat = urlParams.get('produk');
@@ -1104,14 +1095,13 @@ input, button, select, textarea {
         });
     }
 
-    var modalCrop, modalProd, modalShareInstance;
-var currentViewedProductId = ""; // Untuk menyimpan ID yang sedang dilihat
+    var modalCrop, modalProd, modalShareInstance, quill;
+    var currentViewedProductId = ""; // Untuk menyimpan ID yang sedang dilihat
 
-window.addEventListener('DOMContentLoaded', function() { 
-    modalCrop = new bootstrap.Modal(document.getElementById('modalCrop')); 
-    modalProd = new bootstrap.Modal(document.getElementById('modalProduct')); 
-    modalShareInstance = new bootstrap.Modal(document.getElementById('modalShare')); 
-});
+    window.addEventListener('DOMContentLoaded', function() { 
+        modalCrop = new bootstrap.Modal(document.getElementById('modalCrop')); 
+        modalProd = new bootstrap.Modal(document.getElementById('modalProduct')); 
+        modalShareInstance = new bootstrap.Modal(document.getElementById('modalShare')); 
         
         // Mengaktifkan Quill Editor
         quill = new Quill('#editor-container', {
