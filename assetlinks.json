@@ -2,7 +2,7 @@
   "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
     "namespace": "android_app",
-    "package_name": "com.id.faryedtech", 
+    "package_name": "id.my.fary_edtech.www.twa", 
     "sha256_cert_fingerprints": ["83:1A:18:64:59:09:D5:DB:A5:24:A6:0D:19:96:4C:93:BE:F4:72:6E:EB:25:E7:C0:35:61:44:48:7F:2D:8C:E8"]
   }
 }]
