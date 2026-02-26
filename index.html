@@ -26,7 +26,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
-    
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Outfit', sans-serif; background: radial-gradient(circle at top left, #a78bfa, transparent 50%), radial-gradient(circle at bottom right, #38bdf8, transparent 50%), linear-gradient(120deg, #e0e7ff 0%, #f3e8ff 100%); background-attachment: fixed; color: #1f2937; min-height: 100vh; padding-bottom: 0px; overflow-x: hidden; }
@@ -387,7 +387,10 @@ input, button, select, textarea {
                         <div class="row">
                             <div class="col-md-6 mb-2"><label class="text-muted small fw-bold">Nama Produk</label><input type="text" id="prod-nama" class="form-control form-control-sm" required></div>
                             <div class="col-md-6 mb-2"><label class="text-muted small fw-bold">Detail Singkat (Katalog)</label><input type="text" id="prod-detail" class="form-control form-control-sm" required></div>
-                            <div class="col-md-12 mb-3"><label class="text-muted small fw-bold">Spesifikasi Lengkap</label><textarea id="prod-spesifikasi" class="form-control form-control-sm" rows="4" placeholder="Tulis spesifikasi lengkap di sini..."></textarea></div>
+                            <div class="col-md-12 mb-3">
+                            <label class="text-muted small fw-bold">Spesifikasi Lengkap</label>
+                            <div id="editor-container" style="height: 200px; background: #fff; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;"></div>
+                            <input type="hidden" id="prod-spesifikasi"></div>
                             <div class="col-md-12 mb-3 bg-light p-2 rounded border"><div class="form-check form-switch mb-1"><input class="form-check-input" type="checkbox" id="prod-opsiSiswa"><label class="form-check-label fw-bold text-primary small" for="prod-opsiSiswa">Aktifkan Opsi Jumlah Siswa</label></div></div>
                             <div class="col-6 mb-2"><label class="text-muted small fw-bold">Harga Coret</label><input type="number" id="prod-hCoret" class="form-control form-control-sm"></div>
                             <div class="col-6 mb-2"><label class="text-muted small fw-bold">Harga Asli</label><input type="number" id="prod-hAsli" class="form-control form-control-sm" required></div>
@@ -411,6 +414,7 @@ input, button, select, textarea {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     
 <script>
     // ==========================================
@@ -724,7 +728,7 @@ input, button, select, textarea {
         document.getElementById('det-nama').innerText = p.nama;
         document.getElementById('det-harga-coret').innerText = p.hCoret ? "Rp " + Number(p.hCoret).toLocaleString('id-ID') : "";
         document.getElementById('det-desc-singkat').innerText = p.detail;
-        document.getElementById('det-desc-lengkap').innerText = p.spesifikasi || p.detail || "Belum ada spesifikasi lengkap."; 
+        document.getElementById('det-desc-lengkap').innerHTML = p.spesifikasi || p.detail || "Belum ada spesifikasi lengkap."; 
         
         var isOpsiSiswa = (p.opsiSiswa === true || p.opsiSiswa === 'true');
         var btnBeli = document.getElementById('det-btn-beli');
@@ -974,7 +978,7 @@ input, button, select, textarea {
     function editProduct(id) {
         var p = null; for(var i=0; i<dbProducts.length; i++) { if(dbProducts[i].id === id) p = dbProducts[i]; }
         if(!p) return;
-        document.getElementById('prod-id').value = p.id; document.getElementById('prod-nama').value = p.nama; document.getElementById('prod-detail').value = p.detail; document.getElementById('prod-spesifikasi').value = p.spesifikasi || ''; document.getElementById('prod-hCoret').value = p.hCoret || ''; document.getElementById('prod-hAsli').value = p.hAsli; document.getElementById('prod-hMidtrans').value = p.hMidtrans || ''; document.getElementById('prod-linkDemo').value = p.linkDemo || ''; document.getElementById('prod-linkVid').value = p.linkVid || ''; document.getElementById('prod-fotoUrl').value = p.fotoUrl || ''; document.getElementById('prod-opsiSiswa').checked = (p.opsiSiswa === true || p.opsiSiswa === 'true');
+        document.getElementById('prod-id').value = p.id; document.getElementById('prod-nama').value = p.nama; document.getElementById('prod-detail').value = p.detail; quill.root.innerHTML = p.spesifikasi || ''; document.getElementById('prod-hCoret').value = p.hCoret || ''; document.getElementById('prod-hAsli').value = p.hAsli; document.getElementById('prod-hMidtrans').value = p.hMidtrans || ''; document.getElementById('prod-linkDemo').value = p.linkDemo || ''; document.getElementById('prod-linkVid').value = p.linkVid || ''; document.getElementById('prod-fotoUrl').value = p.fotoUrl || ''; document.getElementById('prod-opsiSiswa').checked = (p.opsiSiswa === true || p.opsiSiswa === 'true');
         base64Images.prod = null; if(p.fotoUrl) { document.getElementById('preview-prod').src = p.fotoUrl; document.getElementById('preview-prod').style.display = 'block'; } else { document.getElementById('preview-prod').style.display = 'none'; } modalProd.show();
     }
 
@@ -1013,16 +1017,36 @@ input, button, select, textarea {
         });
     }
 
-    var modalCrop, modalProd;
-    window.addEventListener('DOMContentLoaded', function() { modalCrop = new bootstrap.Modal(document.getElementById('modalCrop')); modalProd = new bootstrap.Modal(document.getElementById('modalProduct')); });
-    function openModalProduct() { document.getElementById('formProduct').reset(); document.getElementById('prod-id').value = ''; document.getElementById('prod-spesifikasi').value = ''; base64Images.prod = null; document.getElementById('preview-prod').style.display = 'none'; modalProd.show(); }
+    var modalCrop, modalProd, quill; // Tambahkan variabel quill
+    window.addEventListener('DOMContentLoaded', function() { 
+        modalCrop = new bootstrap.Modal(document.getElementById('modalCrop')); 
+        modalProd = new bootstrap.Modal(document.getElementById('modalProduct')); 
+        
+        // Mengaktifkan Quill Editor
+        quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Tulis spesifikasi lengkap di sini...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['link', 'clean']
+                ]
+            }
+        });
+    });
+
+    function openModalProduct() { document.getElementById('formProduct').reset(); document.getElementById('prod-id').value = ''; quill.root.innerHTML = ''; base64Images.prod = null; document.getElementById('preview-prod').style.display = 'none'; modalProd.show(); }
     function triggerCrop(e, target) { currentCropTarget = target; var file = e.target.files[0]; if (file) { var reader = new FileReader(); reader.onload = function(event) { document.getElementById('crop-image-container').src = event.target.result; modalCrop.show(); document.getElementById('modalCrop').addEventListener('shown.bs.modal', function () { if(cropper) cropper.destroy(); var aspect = (target === 'hero') ? 16/9 : 1/1; cropper = new Cropper(document.getElementById('crop-image-container'), { aspectRatio: aspect, viewMode: 1 }); }, {once: true}); }; reader.readAsDataURL(file); } }
     function applyCrop() { if(cropper) { var w = (currentCropTarget === 'hero') ? 800 : 500; var h = (currentCropTarget === 'hero') ? 450 : 500; var canvas = cropper.getCroppedCanvas({ width: w, height: h }); var base64 = canvas.toDataURL('image/png'); base64Images[currentCropTarget] = base64; var preview = document.getElementById('preview-' + currentCropTarget); if(preview) { preview.src = base64; preview.style.display = 'block'; } modalCrop.hide(); } }
     function cancelCrop() { document.getElementById(currentCropTarget + '-file').value = ""; base64Images[currentCropTarget] = null; modalCrop.hide(); }
     
     function submitProduct() { 
         var loadData = mulaiLoadingBtn('btnSaveProd', "<i class='fa-solid fa-save'></i> Simpan");
-        var productData = { id: document.getElementById('prod-id').value, nama: document.getElementById('prod-nama').value, detail: document.getElementById('prod-detail').value, spesifikasi: document.getElementById('prod-spesifikasi').value, hCoret: document.getElementById('prod-hCoret').value, hAsli: document.getElementById('prod-hAsli').value, hMidtrans: document.getElementById('prod-hMidtrans').value, linkDemo: document.getElementById('prod-linkDemo').value, linkVid: document.getElementById('prod-linkVid').value, fotoUrl: document.getElementById('prod-fotoUrl').value, opsiSiswa: document.getElementById('prod-opsiSiswa').checked }; 
+        var productData = { id: document.getElementById('prod-id').value, nama: document.getElementById('prod-nama').value, detail: document.getElementById('prod-detail').value, spesifikasi: quill.root.innerHTML, hCoret: document.getElementById('prod-hCoret').value, hAsli: document.getElementById('prod-hAsli').value, hMidtrans: document.getElementById('prod-hMidtrans').value, linkDemo: document.getElementById('prod-linkDemo').value, linkVid: document.getElementById('prod-linkVid').value, fotoUrl: document.getElementById('prod-fotoUrl').value, opsiSiswa: document.getElementById('prod-opsiSiswa').checked }; 
         gasAPI_POST({ action: 'saveProduct', auth: currentUser, productData: productData, base64Image: base64Images.prod }).then(res => {
             stopLoadingBtn(loadData);
             if(res.status === 'success') { base64Images.prod = null; modalProd.hide(); Swal.fire('Berhasil', 'Produk disimpan', 'success'); fetchProductsFromSheet(); loadAdminTable(); } 
