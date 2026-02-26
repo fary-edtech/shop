@@ -733,10 +733,6 @@ input, button, select, textarea {
                 // Hapus tulisan ?produk=xxx dari kolom alamat (Address bar) tanpa reload
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
-            // ------------------------------------------------
-
-        }).catch(e => {
-            // ...
 
         }).catch(e => {
             document.getElementById('daftarProduk').innerHTML = "<div class='alert alert-danger mx-auto text-center w-75'>Koneksi terputus ke server.</div>";
