@@ -1,5 +1,4 @@
-// Ganti angka v1 menjadi v2, v3, dst SETIAP KALI kamu melakukan perubahan besar pada tampilan web.
-const CACHE_NAME = 'fary-edtech-v2'; 
+const CACHE_NAME = 'fary-edtech-auto'; 
 const urlsToCache = [
   './',
   './index.html',
@@ -7,43 +6,49 @@ const urlsToCache = [
   './manifest.json'
 ];
 
-// Tahap Install: Menyimpan file ke memori HP
+// Tahap 1: Install & Simpan file ke memori HP pertama kali
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       return cache.addAll(urlsToCache);
     })
   );
-  self.skipWaiting(); // Memaksa service worker baru langsung aktif
+  self.skipWaiting();
 });
 
-// Tahap Activate: Menghapus memori (cache) versi lama jika ada update
+// Tahap 2: Hapus cache lama (jika ada) dan aktifkan
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
-            console.log('Menghapus cache versi lama:', cacheName);
-            return caches.delete(cacheName); // Hapus ingatan lama
+            return caches.delete(cacheName);
           }
         })
       );
     })
   );
-  self.clients.claim(); // Memastikan semua tab langsung memakai versi baru
+  self.clients.claim();
 });
 
-// Tahap Fetch: Mengambil data
+// Tahap 3: OTOMATIS AMBIL VERSI TERBARU
 self.addEventListener('fetch', event => {
-  // Jangan cache API Google Script agar data pesanan & produk selalu live
+  // Pengecualian untuk database Google Script
   if (event.request.url.includes('script.google.com')) {
       return; 
   }
 
-  // Strategi: Coba ambil dari internet dulu, kalau gagal baru pakai Cache HP
+  // Strategi "Network-First": Selalu minta versi paling baru ke server
   event.respondWith(
-    fetch(event.request).catch(() => {
+    fetch(event.request).then(response => {
+      // Jika internet lancar dan dapat versi baru, diam-diam perbarui memori HP (Cache)
+      return caches.open(CACHE_NAME).then(cache => {
+        cache.put(event.request, response.clone());
+        return response; // Tampilkan web versi terbaru
+      });
+    }).catch(() => {
+      // Jika HP sedang OFFLINE / Tidak ada internet, baru buka dari memori HP
       return caches.match(event.request);
     })
   );
