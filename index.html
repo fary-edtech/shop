@@ -1208,5 +1208,18 @@ function shareKe(platform) {
 
 </script>
 
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('./service-worker.js')
+            .then(function(registration) {
+              console.log('Service Worker sukses terdaftar dengan scope: ', registration.scope);
+            }, function(err) {
+              console.log('Pendaftaran Service Worker gagal: ', err);
+            });
+        });
+      }
+    </script>
+
 </body>
 </html>
