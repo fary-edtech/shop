@@ -1,4 +1,5 @@
-const CACHE_NAME = 'fary-edtech-v1';
+// Ganti angka v1 menjadi v2, v3, dst SETIAP KALI kamu melakukan perubahan besar pada tampilan web.
+const CACHE_NAME = 'fary-edtech-v2'; 
 const urlsToCache = [
   './',
   './index.html',
@@ -6,25 +7,41 @@ const urlsToCache = [
   './manifest.json'
 ];
 
-// Tahap Install: Menyimpan file penting ke dalam Cache HP pengguna
+// Tahap Install: Menyimpan file ke memori HP
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      console.log('Cache berhasil dibuka');
       return cache.addAll(urlsToCache);
     })
   );
+  self.skipWaiting(); // Memaksa service worker baru langsung aktif
 });
 
-// Tahap Fetch: Mengatur cara aplikasi memuat data
+// Tahap Activate: Menghapus memori (cache) versi lama jika ada update
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Menghapus cache versi lama:', cacheName);
+            return caches.delete(cacheName); // Hapus ingatan lama
+          }
+        })
+      );
+    })
+  );
+  self.clients.claim(); // Memastikan semua tab langsung memakai versi baru
+});
+
+// Tahap Fetch: Mengambil data
 self.addEventListener('fetch', event => {
-  // PENTING: Jangan cache request ke API Google Apps Script agar data produk & order selalu baru
+  // Jangan cache API Google Script agar data pesanan & produk selalu live
   if (event.request.url.includes('script.google.com')) {
       return; 
   }
 
-  // Untuk file HTML, CSS, dan Gambar, coba ambil dari internet dulu. 
-  // Kalau internet mati, baru ambil dari Cache memori HP.
+  // Strategi: Coba ambil dari internet dulu, kalau gagal baru pakai Cache HP
   event.respondWith(
     fetch(event.request).catch(() => {
       return caches.match(event.request);
