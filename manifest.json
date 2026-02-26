@@ -1,4 +1,6 @@
-{
+
+  {
+  "id": "/?source=pwa",
   "name": "Fary EdTech Shop",
   "short_name": "Fary EdTech",
   "description": "Menghadirkan aplikasi digital - Inovasi Teknologi untuk Pendidikan Masa Depan",
@@ -18,6 +20,20 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "./logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ]
 }
