@@ -501,6 +501,15 @@ input, button, select, textarea {
     var base64Images = { hero: null, prof: null, logo: null, prod: null }; 
     var cartOffcanvasInstance = null; 
     var checkoutModalInstance = null;
+    // --- KODE BARU: Tangkap URL saat pertama kali dimuat ---
+    var initialProductId = null;
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('produk')) {
+        initialProductId = urlParams.get('produk');
+        // Langsung bersihkan link URL dari browser
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    // --------------------------------------------------------
 
     // 3. FUNGSI SCROLL & PASSWORD
     window.onscroll = function() {
@@ -575,7 +584,7 @@ input, button, select, textarea {
         if (savedUser) { try { currentUser = JSON.parse(savedUser); } catch(e){} }
     }
 
-    function initApp() {
+   function initApp() {
         cartOffcanvasInstance = new bootstrap.Offcanvas(document.getElementById('cartOffcanvas'), { backdrop: false });
         checkoutModalInstance = new bootstrap.Modal(document.getElementById('modalCheckoutForm'));
         
@@ -588,6 +597,13 @@ input, button, select, textarea {
             var adminMenus = document.querySelectorAll('.admin-only');
             for(var j=0; j<adminMenus.length; j++) adminMenus[j].classList.remove('d-none');
         }
+
+        // --- KODE BARU: Langsung pindah layar ke Detail jika ada parameter produk ---
+        if (initialProductId) {
+            navTo('detail'); // Pindah layar seketika
+            document.getElementById('det-nama').innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Memuat produk...";
+        }
+        // ----------------------------------------------------------------------------
 
         memuatPengaturan();
         fetchProductsFromSheet(); 
@@ -695,11 +711,21 @@ input, button, select, textarea {
     function bukaProfil() { document.getElementById('modalProfil').style.display = 'flex'; }
     function bukaPrivasi() { new bootstrap.Modal(document.getElementById('modalPrivasi')).show(); }
 
-    // 8. TAMPILAN PRODUK 
+   // 8. TAMPILAN PRODUK 
     function fetchProductsFromSheet() {
         let cachedData = localStorage.getItem('faryProducts');
         if(cachedData) {
-            try { dbProducts = JSON.parse(cachedData); if(dbProducts.length > 0) renderProduk(dbProducts); } catch(e){}
+            try { 
+                dbProducts = JSON.parse(cachedData); 
+                if(dbProducts.length > 0) {
+                    renderProduk(dbProducts); 
+                    // Jika ada data di cache, langsung buka produknya
+                    if(initialProductId) {
+                        bukaDetail(initialProductId);
+                        initialProductId = null; // Kosongkan agar tidak dobel
+                    }
+                }
+            } catch(e){}
         }
 
         gasAPI_GET('getProducts').then(products => {
@@ -711,19 +737,15 @@ input, button, select, textarea {
             localStorage.setItem('faryProducts', JSON.stringify(dbProducts));
             renderProduk(dbProducts); 
 
-            // --- KODE BARU: Deteksi Link dan Bersihkan URL ---
-            const urlParams = new URLSearchParams(window.location.search);
-            const produkIdDilihat = urlParams.get('produk');
-            
-            if (produkIdDilihat) {
-                // Buka detail jika ID cocok
-                var cekAda = dbProducts.find(x => x.id === produkIdDilihat);
+            // --- KODE BARU: Buka detail dari server jika belum dibuka oleh cache ---
+            if (initialProductId) {
+                var cekAda = dbProducts.find(x => x.id === initialProductId);
                 if(cekAda) {
-                    setTimeout(function() { bukaDetail(produkIdDilihat); }, 500); 
+                    bukaDetail(initialProductId); 
                 }
-                // Hapus tulisan ?produk=xxx dari kolom alamat (Address bar) tanpa reload
-                window.history.replaceState({}, document.title, window.location.pathname);
+                initialProductId = null; // Kosongkan
             }
+            // ------------------------------------------------------------------------
 
         }).catch(e => {
             document.getElementById('daftarProduk').innerHTML = "<div class='alert alert-danger mx-auto text-center w-75'>Koneksi terputus ke server.</div>";
@@ -994,17 +1016,30 @@ input, button, select, textarea {
     }
 
     function logout() { 
-        currentUser = null; 
-        localStorage.removeItem('faryUser'); 
-        
-        // --- KODE BARU: Menyembunyikan menu admin saat logout ---
-        document.getElementById('nav-btn-login-desktop').classList.remove('d-none');
-        var btnMb = document.getElementById('nav-btn-login-mobile'); if(btnMb) btnMb.classList.remove('d-none');
-        var adminMenus = document.querySelectorAll('.admin-only');
-        for(var j=0; j<adminMenus.length; j++) adminMenus[j].classList.add('d-none');
-        // --------------------------------------------------------
-        
-        navTo('public'); 
+        Swal.fire({
+            title: 'Yakin Ingin Keluar?',
+            text: "Anda harus login kembali untuk masuk ke Dasbor Admin.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, Keluar!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Proses logout jika diklik "Ya"
+                currentUser = null; 
+                localStorage.removeItem('faryUser'); 
+                
+                document.getElementById('nav-btn-login-desktop').classList.remove('d-none');
+                var btnMb = document.getElementById('nav-btn-login-mobile'); if(btnMb) btnMb.classList.remove('d-none');
+                var adminMenus = document.querySelectorAll('.admin-only');
+                for(var j=0; j<adminMenus.length; j++) adminMenus[j].classList.add('d-none');
+                
+                navTo('public'); 
+                Swal.fire('Berhasil', 'Anda telah keluar dari sistem.', 'success');
+            }
+        });
     }
 
     function loadDashboardStats() { 
