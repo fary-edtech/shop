@@ -916,18 +916,43 @@ input, button, select, textarea {
     }
 
 
-    // 11. FUNGSI ADMIN
+  // 11. FUNGSI ADMIN
     function handleLogin(e) {
         e.preventDefault(); 
         var loadData = mulaiLoadingBtn('btnLog', 'Masuk');
         gasAPI_POST({ action: 'loginUser', email: document.getElementById('logEmail').value, password: document.getElementById('logPass').value }).then(res => {
             stopLoadingBtn(loadData);
-            if(res.status === 'success') { currentUser = res.user; localStorage.setItem('faryUser', JSON.stringify(currentUser)); Swal.fire('Berhasil', 'Selamat datang', 'success'); navTo('admin-dashboard'); } 
+            if(res.status === 'success') { 
+                currentUser = res.user; 
+                localStorage.setItem('faryUser', JSON.stringify(currentUser)); 
+                Swal.fire('Berhasil', 'Selamat datang', 'success'); 
+                
+                // --- KODE BARU: Memunculkan menu admin tanpa perlu refresh ---
+                document.getElementById('nav-btn-login-desktop').classList.add('d-none');
+                var btnMb = document.getElementById('nav-btn-login-mobile'); if(btnMb) btnMb.classList.add('d-none');
+                var adminMenus = document.querySelectorAll('.admin-only');
+                for(var j=0; j<adminMenus.length; j++) adminMenus[j].classList.remove('d-none');
+                // -------------------------------------------------------------
+                
+                navTo('admin-dashboard'); 
+            } 
             else { Swal.fire('Gagal', res.message, 'error'); } 
         }).catch(err => { stopLoadingBtn(loadData); Swal.fire('Error', 'Gagal tersambung', 'error'); });
     }
 
-    function logout() { currentUser = null; localStorage.removeItem('faryUser'); navTo('public'); }
+    function logout() { 
+        currentUser = null; 
+        localStorage.removeItem('faryUser'); 
+        
+        // --- KODE BARU: Menyembunyikan menu admin saat logout ---
+        document.getElementById('nav-btn-login-desktop').classList.remove('d-none');
+        var btnMb = document.getElementById('nav-btn-login-mobile'); if(btnMb) btnMb.classList.remove('d-none');
+        var adminMenus = document.querySelectorAll('.admin-only');
+        for(var j=0; j<adminMenus.length; j++) adminMenus[j].classList.add('d-none');
+        // --------------------------------------------------------
+        
+        navTo('public'); 
+    }
 
     function loadDashboardStats() { 
         gasAPI_POST({ action: 'getDashboardStats', auth: currentUser }).then(s => {
