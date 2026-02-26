@@ -1177,7 +1177,7 @@ input, button, select, textarea {
 function shareKe(platform) {
     // Membuat URL unik (Contoh: https://domainmu.com/?produk=ID123)
     var urlLink = window.location.origin + window.location.pathname + "?produk=" + currentViewedProductId;
-    var teksJudul = "Cek produk keren ini: " + document.getElementById('det-nama').innerText;
+    var teksJudul = "Salam Inovasi. Yuuk cek produk canggih ini. Buruaan...!! sedang diskon loh: " + document.getElementById('det-nama').innerText;
 
     if(platform === 'wa') {
         window.open("https://wa.me/?text=" + encodeURIComponent(teksJudul + " - " + urlLink), "_blank");
