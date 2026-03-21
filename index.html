@@ -19,13 +19,10 @@
     <meta property="og:url" content="https://www.farypinstore.my.id/">
 
 
-    <link rel="icon" type="image/png" href="/logo.png">
-    <link rel="manifest" href="/manifest.json">
-
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" href="/logo.png">
+    <link rel="icon" type="image/png" href="./logo.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#4f46e5">
+    <link rel="apple-touch-icon" href="./logo.png">
     
     
     
@@ -144,6 +141,16 @@ input, button, select, textarea {
             .card-body-custom { padding: 10px; }
             .card-title-custom { font-size: 0.85rem; margin-bottom: 6px; height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
             
+            /* --- TAMBAHAN BARU UNTUK KOTAK PRODUK --- */
+.card-body-custom .fs-5 { font-size: 0.9rem !important; } /* Mengecilkan harga */
+.card-body-custom .text-decoration-line-through { font-size: 0.7rem !important; margin-bottom: 2px; } /* Mengecilkan harga coret */
+.card-body-custom .btn {
+    font-size: 0.75rem !important; /* Mengecilkan teks tombol */
+    padding: 5px 8px !important; /* Mengecilkan ukuran tombol */
+    margin-bottom: 5px !important;
+}
+.card-body-custom .mt-auto { padding-top: 8px !important; }
+
             .footer-pro { border-radius: 0; padding: 25px 15px 15px; text-align: center; margin-bottom: 0px; }
             .offcanvas-end { height: 100vh !important; top: 0 !important; width: 85% !important; border-radius: 0; }
             .admin-panel { padding: 15px; margin-top: 90px;}
@@ -886,7 +893,12 @@ input, button, select, textarea {
         if (isOpsiSiswa) {
             document.getElementById('det-harga-asli').innerText = "Mulai Rp 100.000";
             divOpsi.classList.remove('d-none');
-            document.getElementById('det-select-siswa').innerHTML = "<option value=''>Pilih Jml Siswa...</option><option value='100 Siswa|100000'>1-100 Siswa (100Rb)</option><option value='200 Siswa|200000'>101-200 Siswa (200Rb)</option><option value='300 Siswa|300000'>201-300 Siswa (300Rb)</option><option value='400 Siswa|400000'>301-400 Siswa (400Rb)</option><option value='500 Siswa|500000'>401-500 Siswa (500Rb)</option><option value='600 Siswa|600000'>501-600 Siswa (600Rb)</option><option value='700 Siswa|700000'>601-700 Siswa (700Rb)</option><option value='800 Siswa|800000'>701-800 Siswa (800Rb)</option><option value='900 Siswa|900000'>801-900 Siswa (900Rb)</option><option value='1000 Siswa|1000000'>901-1000 Siswa (1Jt)</option>";
+            document.getElementById('det-select-siswa').innerHTML = 
+   "<option value=''>Pilih Jml Siswa...</option>" +
+   "<option value='250 Siswa|300000'>1-350 Siswa (300Rb)</option>" +
+   "<option value='650 Siswa|550000'>351-650 Siswa (550Rb)</option>" +
+   "<option value='950 Siswa|800000'>651-950 Siswa (800Rb)</option>" +
+   "<option value='Unlimited Siswa|1000000'>951 Siswa ke atas (1Jt)</option>";
             
             btnBeli.onclick = function() {
                 var val = document.getElementById('det-select-siswa').value;
