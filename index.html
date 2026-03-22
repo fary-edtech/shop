@@ -913,10 +913,23 @@ var actionHtml =
     "<button class='btn w-100 fw-bold text-white py-2 shadow-sm' style='background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none;' onclick=\"" + onClickBeli + "\"><i class='fa-solid fa-cart-plus'></i> " + textTombolBeli + "</button>";
 
             // Membuat elemen rating bintang kecil
-var starHtml = "<div class='text-warning mb-1' style='font-size: 0.75rem;'><i class='fa-solid fa-star'></i><i class='fa-solid fa-star'></i><i class='fa-solid fa-star'></i><i class='fa-solid fa-star'></i><i class='fa-solid fa-star'></i> <span class='text-muted ms-1' style='font-size: 0.65rem;'>(5.0)</span></div>";
+// --- LOGIKA BINTANG DINAMIS ---
+   var ratingVal = p.rating !== undefined ? p.rating : 4.0; // Default 4
+   var countVal = p.ulasanCount || 0;
 
-// Menyisipkan starHtml tepat sebelum judul produk (p.nama)
-htmlTemplate += "<div class='card-custom'><img src='" + foto + "' class='card-img-custom' loading='lazy'><div class='card-body-custom d-flex flex-column'>" + starHtml + "<div class='card-title-custom'>" + p.nama + "</div><div class='mt-auto pt-3 border-top'><div class='text-center mb-3'>" + hargaCoret + "<span class='text-primary fw-bold fs-5'>" + hargaTampil + "</span></div>" + actionHtml + "</div></div></div>";
+   var starHtml = "<div class='text-warning mb-1' style='font-size: 0.75rem;'>";
+   for(var s = 1; s <= 5; s++) {
+       if (s <= ratingVal) {
+           starHtml += "<i class='fa-solid fa-star'></i>"; // Bintang penuh
+       } else if (s - 0.5 <= ratingVal) {
+           starHtml += "<i class='fa-solid fa-star-half-stroke'></i>"; // Bintang setengah
+       } else {
+           starHtml += "<i class='fa-regular fa-star'></i>"; // Bintang kosong (putih/abu)
+       }
+   }
+   var textCount = countVal > 0 ? "(" + ratingVal.toFixed(1) + ")" : "(4.0)";
+   starHtml += " <span class='text-muted ms-1' style='font-size: 0.65rem;'>" + textCount + "</span></div>";
+   // ------------------------------
         }
         container.innerHTML = htmlTemplate;
     }
