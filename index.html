@@ -274,6 +274,11 @@ input, button, select, textarea {
                         <div class="d-flex align-items-center gap-3 mb-3"><img id="footer-logo" src="" style="width:40px; height:40px; border-radius:50%; display:none; object-fit:cover; border:2px solid white;"><h5 class="mb-0 fs-5" id="footer-namaToko">PT Farypin Inovasi Teknologi</h5></div>
                         <p id="footer-role" style="line-height:1.6; margin-bottom: 20px; font-size:0.95rem;">Menghadirkan inovasi teknologi untuk pendidikan masa depan.</p>
                         <div id="footer-social" class="d-flex flex-wrap"></div>
+                        <div class="mt-4 pt-3 border-top border-secondary d-flex gap-3 align-items-center flex-wrap bg-white p-2 rounded-3 shadow-sm d-inline-flex">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Logo_Kementerian_Hukum_dan_HAM_Republik_Indonesia.png/600px-Logo_Kementerian_Hukum_dan_HAM_Republik_Indonesia.png" alt="Kemenkumham" style="height: 35px; object-fit: contain;" title="Kemenkumham RI">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Logo_Kementerian_Komunikasi_dan_Digital_Republik_Indonesia.svg" alt="Komdigi" style="height: 35px; object-fit: contain;" title="Kominfo / Komdigi">
+    <img src="https://oss.go.id/assets/logo/logo-oss.svg" alt="OSS" style="height: 35px; object-fit: contain;" title="Kementerian Investasi / BKPM">
+</div>
                     </div>
                     <div class="col-lg-3 mb-4 mt-lg-0 mt-2">
                         <h5>Tautan Cepat</h5>
@@ -285,7 +290,7 @@ input, button, select, textarea {
                     <div class="col-lg-4 mb-4 mt-lg-0 mt-2">
                         <h5>Hubungi Kami</h5>
                         <div class="d-flex align-items-center mb-2"><i class="fa-solid fa-map-location-dot fs-5 text-info" style="width:30px;"></i> <span id="footer-domisili" class="fs-6">-</span></div>
-                        <div class="d-flex align-items-center mb-2"><i class="fa-brands fa-whatsapp fs-5 text-success" style="width:30px;"></i> <span id="footer-wa">-</span></div>
+                       <div class="d-flex align-items-start mb-2"><i class="fa-brands fa-whatsapp fs-5 text-success mt-1" style="width:30px;"></i> <div id="footer-wa" class="d-flex flex-column">-</div></div>
                         <div class="d-flex align-items-center mb-2"><i class="fa-solid fa-envelope fs-5 text-warning" style="width:30px;"></i> <span id="footer-email">-</span></div>
                     </div>
                 </div>
@@ -378,7 +383,14 @@ input, button, select, textarea {
       <div class="col-md-6 mb-3 d-none"><label>Domisili</label><input type="text" id="prof-domisili" class="form-control"></div>
       <div class="col-md-6 mb-3 d-none"><label>Spesialisasi</label><input type="text" id="prof-spesialisasi" class="form-control"></div>
       <div class="col-md-12 mb-3 d-none"><label>Deskripsi Profil</label><textarea id="prof-desc" class="form-control" rows="3"></textarea></div>
-      <div class="col-md-6 mb-3"><label>Nomor WhatsApp (Cth: 62812...)</label><input type="text" id="prof-wa" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label class="fw-bold text-primary">Nama Pemasar 1</label><input type="text" id="prof-waName1" class="form-control" placeholder="Cth: Admin Utama"></div>
+<div class="col-md-6 mb-3"><label class="fw-bold text-primary">Nomor WA 1 (628...)</label><input type="text" id="prof-wa" class="form-control"></div>
+
+<div class="col-md-6 mb-3"><label class="fw-bold text-success">Nama Pemasar 2</label><input type="text" id="prof-waName2" class="form-control" placeholder="Cth: CS Teknis"></div>
+<div class="col-md-6 mb-3"><label class="fw-bold text-success">Nomor WA 2 (628...)</label><input type="text" id="prof-wa2" class="form-control"></div>
+
+<div class="col-md-6 mb-3"><label class="fw-bold text-warning">Nama Pemasar 3</label><input type="text" id="prof-waName3" class="form-control" placeholder="Cth: CS Sales"></div>
+<div class="col-md-6 mb-3"><label class="fw-bold text-warning">Nomor WA 3 (628...)</label><input type="text" id="prof-wa3" class="form-control"></div>
       <div class="col-md-6 mb-3"><label>Email</label><input type="email" id="prof-email" class="form-control"></div>
       <div class="col-md-6 mb-3"><label>Username Instagram (tanpa @)</label><input type="text" id="prof-ig" class="form-control"></div>
       <div class="col-md-6 mb-3"><label>Username Facebook</label><input type="text" id="prof-fb" class="form-control"></div>
@@ -690,7 +702,16 @@ input, button, select, textarea {
             document.getElementById('footer-copyright').innerText = settings.profNama || "Farypin Store";
             document.getElementById('footer-role').innerText = settings.profRole || "Solusi digital terbaik untuk sekolah/kantor Anda.";
             document.getElementById('footer-domisili').innerText = settings.domisili || "Indonesia";
-            document.getElementById('footer-wa').innerHTML = settings.wa ? "<a href='https://wa.me/" + settings.wa + "' target='_blank' class='text-decoration-none text-light fw-bold fs-6'>+" + settings.wa + "</a>" : "-";
+            
+            
+var htmlWA = "";
+if(settings.wa) htmlWA += "<div class='mb-1'><a href='https://wa.me/" + settings.wa + "' target='_blank' class='text-decoration-none text-light fw-bold fs-6'>+" + settings.wa + "</a> <span class='text-info small'>(" + (settings.waName1 || "CS 1") + ")</span></div>";
+if(settings.wa2) htmlWA += "<div class='mb-1'><a href='https://wa.me/" + settings.wa2 + "' target='_blank' class='text-decoration-none text-light fw-bold fs-6'>+" + settings.wa2 + "</a> <span class='text-info small'>(" + (settings.waName2 || "CS 2") + ")</span></div>";
+if(settings.wa3) htmlWA += "<div class='mb-1'><a href='https://wa.me/" + settings.wa3 + "' target='_blank' class='text-decoration-none text-light fw-bold fs-6'>+" + settings.wa3 + "</a> <span class='text-info small'>(" + (settings.waName3 || "CS 3") + ")</span></div>";
+
+document.getElementById('footer-wa').innerHTML = htmlWA !== "" ? htmlWA : "-";
+
+
             document.getElementById('footer-email').innerHTML = settings.email ? "<a href='mailto:" + settings.email + "' target='_blank' class='text-decoration-none text-light fw-bold fs-6'>" + settings.email + "</a>" : "-";
             if(settings.logoToko) { document.getElementById('footer-logo').src = settings.logoToko; document.getElementById('footer-logo').style.display = 'block'; }
 
@@ -774,6 +795,11 @@ input, button, select, textarea {
         document.getElementById('prof-spesialisasi').value = appSettings.spesialisasi || ''; 
         document.getElementById('prof-desc').value = appSettings.profDesc || ''; 
         document.getElementById('prof-wa').value = appSettings.wa || ''; 
+        document.getElementById('prof-waName1').value = appSettings.waName1 || ''; 
+        document.getElementById('prof-wa2').value = appSettings.wa2 || ''; 
+        document.getElementById('prof-waName2').value = appSettings.waName2 || ''; 
+        document.getElementById('prof-wa3').value = appSettings.wa3 || ''; 
+        document.getElementById('prof-waName3').value = appSettings.waName3 || '';
         document.getElementById('prof-email').value = appSettings.email || ''; 
         document.getElementById('prof-ig').value = appSettings.ig || ''; 
         document.getElementById('prof-fb').value = appSettings.fb || ''; 
@@ -1271,7 +1297,25 @@ var actionHtml =
     function saveProfile(e) { 
         e.preventDefault(); 
         var loadData = mulaiLoadingBtn('btnSaveProf', "<i class='fa-solid fa-save'></i> Simpan Profil");
-        var data = { profNama: document.getElementById('prof-nama').value, profRole: document.getElementById('prof-role').value, domisili: document.getElementById('prof-domisili').value, spesialisasi: document.getElementById('prof-spesialisasi').value, profDesc: document.getElementById('prof-desc').value, wa: document.getElementById('prof-wa').value, email: document.getElementById('prof-email').value, ig: document.getElementById('prof-ig').value, fb: document.getElementById('prof-fb').value, yt: document.getElementById('prof-yt').value, tt: document.getElementById('prof-tt').value, profFoto: document.getElementById('prof-foto').value }; 
+        var data = { 
+    profNama: document.getElementById('prof-nama').value, 
+    profRole: document.getElementById('prof-role').value, 
+    domisili: document.getElementById('prof-domisili').value, 
+    spesialisasi: document.getElementById('prof-spesialisasi').value, 
+    profDesc: document.getElementById('prof-desc').value, 
+    wa: document.getElementById('prof-wa').value, 
+    waName1: document.getElementById('prof-waName1').value, 
+    wa2: document.getElementById('prof-wa2').value, 
+    waName2: document.getElementById('prof-waName2').value, 
+    wa3: document.getElementById('prof-wa3').value, 
+    waName3: document.getElementById('prof-waName3').value, 
+    email: document.getElementById('prof-email').value, 
+    ig: document.getElementById('prof-ig').value, 
+    fb: document.getElementById('prof-fb').value, 
+    yt: document.getElementById('prof-yt').value, 
+    tt: document.getElementById('prof-tt').value, 
+    profFoto: document.getElementById('prof-foto').value 
+}; 
         gasAPI_POST({ action: 'saveAppSettings', auth: currentUser, newSettings: data, base64Images: base64Images }).then(res => {
             stopLoadingBtn(loadData);
             if(res.status === 'success') { base64Images.prof = null; Swal.fire('Sukses', 'Diperbarui!', 'success'); memuatPengaturan(); } 
