@@ -108,7 +108,7 @@ input, button, select, textarea {
            =================================================================== */
         @media screen and (max-width: 991px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 15px; } }
         @media screen and (max-width: 768px) {
-            body { padding-bottom: 75px; } /* Ruang kosong di bawah untuk Bottom Nav */
+            body { padding-bottom: 50px; } /* Ruang kosong di bawah untuk Bottom Nav */
             
             /* Navbar Atas HP (Hanya Search & Lock) */
             nav { height: 60px; padding: 0 10px; }
@@ -151,7 +151,7 @@ input, button, select, textarea {
 }
 .card-body-custom .mt-auto { padding-top: 8px !important; }
 
-            .footer-pro { border-radius: 0; padding: 25px 15px 15px; text-align: center; margin-bottom: 0px; }
+            .footer-pro { border-radius: 0; padding: 25px 15px 85px !important; text-align: center; margin-bottom: 0px; }
             .offcanvas-end { height: 100vh !important; top: 0 !important; width: 85% !important; border-radius: 0; }
             .admin-panel { padding: 15px; margin-top: 90px;}
         }
@@ -912,7 +912,11 @@ var actionHtml =
     "<button class='btn btn-info text-white w-100 fw-bold py-2 mb-2 shadow-sm' onclick=\"bukaDetail('" + p.id + "')\"><i class='fa-solid fa-eye'></i> Lihat Produk</button>" +
     "<button class='btn w-100 fw-bold text-white py-2 shadow-sm' style='background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none;' onclick=\"" + onClickBeli + "\"><i class='fa-solid fa-cart-plus'></i> " + textTombolBeli + "</button>";
 
-            htmlTemplate += "<div class='card-custom'><img src='" + foto + "' class='card-img-custom' loading='lazy'><div class='card-body-custom d-flex flex-column'><div class='card-title-custom'>" + p.nama + "</div><div class='mt-auto pt-3 border-top'><div class='text-center mb-3'>" + hargaCoret + "<span class='text-primary fw-bold fs-5'>" + hargaTampil + "</span></div>" + actionHtml + "</div></div></div>";
+            // Membuat elemen rating bintang kecil
+var starHtml = "<div class='text-warning mb-1' style='font-size: 0.75rem;'><i class='fa-solid fa-star'></i><i class='fa-solid fa-star'></i><i class='fa-solid fa-star'></i><i class='fa-solid fa-star'></i><i class='fa-solid fa-star'></i> <span class='text-muted ms-1' style='font-size: 0.65rem;'>(5.0)</span></div>";
+
+// Menyisipkan starHtml tepat sebelum judul produk (p.nama)
+htmlTemplate += "<div class='card-custom'><img src='" + foto + "' class='card-img-custom' loading='lazy'><div class='card-body-custom d-flex flex-column'>" + starHtml + "<div class='card-title-custom'>" + p.nama + "</div><div class='mt-auto pt-3 border-top'><div class='text-center mb-3'>" + hargaCoret + "<span class='text-primary fw-bold fs-5'>" + hargaTampil + "</span></div>" + actionHtml + "</div></div></div>";
         }
         container.innerHTML = htmlTemplate;
     }
