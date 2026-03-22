@@ -884,55 +884,54 @@ document.getElementById('footer-wa').innerHTML = htmlWA !== "" ? htmlWA : "-";
         });
     }
 
-    function renderProduk(produkArray) {
-        var container = document.getElementById('daftarProduk'); 
-        if(!container) return;
-        
-        container.innerHTML = "";
-        if (produkArray.length === 0) { 
-            container.innerHTML = "<p style='grid-column: 1/-1; text-align:center;'>Belum ada produk untuk ditampilkan.</p>"; 
-            return; 
-        }
-        
-        var htmlTemplate = "";
-        for(var i=0; i<produkArray.length; i++) {
-            var p = produkArray[i];
-            var isOpsiSiswa = (p.opsiSiswa === true || p.opsiSiswa === 'true');
-            var hargaCoret = p.hCoret ? "<span class='text-decoration-line-through text-muted d-block' style='font-size:0.85rem;'>Rp " + Number(p.hCoret).toLocaleString('id-ID') + "</span>" : "";
-            var hargaTampil = isOpsiSiswa ? "<small class='text-muted'>Mulai</small> Rp 300.000" : ("Rp " + Number(p.hAsli).toLocaleString('id-ID'));
-            
-            var foto = p.fotoUrl ? p.fotoUrl.replace('sz=w1000', 'sz=w400') : "https://via.placeholder.com/300";
-            // Teks tombol kita buat seragam menjadi Masukkan Keranjang
-var textTombolBeli = "Masukkan Keranjang"; 
-
-// Jika opsiSiswa aktif, panggil fungsi popup baru, jika tidak langsung ke keranjang
-var onClickBeli = isOpsiSiswa ? "pilihSiswaPopup('" + p.id + "')" : "addToCart('" + p.id + "')";
-
-var actionHtml = 
-    "<button class='btn btn-info text-white w-100 fw-bold py-2 mb-2 shadow-sm' onclick=\"bukaDetail('" + p.id + "')\"><i class='fa-solid fa-eye'></i> Lihat Produk</button>" +
-    "<button class='btn w-100 fw-bold text-white py-2 shadow-sm' style='background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none;' onclick=\"" + onClickBeli + "\"><i class='fa-solid fa-cart-plus'></i> " + textTombolBeli + "</button>";
-
-            // Membuat elemen rating bintang kecil
-// --- LOGIKA BINTANG DINAMIS ---
-   var ratingVal = p.rating !== undefined ? p.rating : 4.0; // Default 4
-   var countVal = p.ulasanCount || 0;
-
-   var starHtml = "<div class='text-warning mb-1' style='font-size: 0.75rem;'>";
-   for(var s = 1; s <= 5; s++) {
-       if (s <= ratingVal) {
-           starHtml += "<i class='fa-solid fa-star'></i>"; // Bintang penuh
-       } else if (s - 0.5 <= ratingVal) {
-           starHtml += "<i class='fa-solid fa-star-half-stroke'></i>"; // Bintang setengah
-       } else {
-           starHtml += "<i class='fa-regular fa-star'></i>"; // Bintang kosong (putih/abu)
-       }
-   }
-   var textCount = countVal > 0 ? "(" + ratingVal.toFixed(1) + ")" : "(4.0)";
-   starHtml += " <span class='text-muted ms-1' style='font-size: 0.65rem;'>" + textCount + "</span></div>";
-   // ------------------------------
-        }
-        container.innerHTML = htmlTemplate;
+ function renderProduk(produkArray) {
+    var container = document.getElementById('daftarProduk'); 
+    if(!container) return;
+    
+    container.innerHTML = "";
+    if (produkArray.length === 0) { 
+        container.innerHTML = "<p style='grid-column: 1/-1; text-align:center;'>Belum ada produk untuk ditampilkan.</p>"; 
+        return; 
     }
+    
+    var htmlTemplate = "";
+    for(var i=0; i<produkArray.length; i++) {
+        var p = produkArray[i];
+        var isOpsiSiswa = (p.opsiSiswa === true || p.opsiSiswa === 'true');
+        var hargaCoret = p.hCoret ? "<span class='text-decoration-line-through text-muted d-block' style='font-size:0.85rem;'>Rp " + Number(p.hCoret).toLocaleString('id-ID') + "</span>" : "";
+        var hargaTampil = isOpsiSiswa ? "<small class='text-muted'>Mulai</small> Rp 100.000" : ("Rp " + Number(p.hAsli).toLocaleString('id-ID'));
+        
+        var foto = p.fotoUrl ? p.fotoUrl.replace('sz=w1000', 'sz=w400') : "https://via.placeholder.com/300";
+        var textTombolBeli = "Masukkan Keranjang";
+        var onClickBeli = isOpsiSiswa ? "pilihSiswaPopup('" + p.id + "')" : "addToCart('" + p.id + "')";
+
+        var actionHtml = 
+            "<button class='btn btn-info text-white w-100 fw-bold py-2 mb-2 shadow-sm' onclick=\"bukaDetail('" + p.id + "')\"><i class='fa-solid fa-eye'></i> Lihat Produk</button>" +
+            "<button class='btn w-100 fw-bold text-white py-2 shadow-sm' style='background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none;' onclick=\"" + onClickBeli + "\"><i class='fa-solid fa-cart-plus'></i> " + textTombolBeli + "</button>";
+
+        // --- LOGIKA BINTANG DINAMIS ---
+        var ratingVal = p.rating !== undefined ? parseFloat(p.rating) : 4.0; 
+        var countVal = p.ulasanCount || 0;
+
+        var starHtml = "<div class='text-warning mb-1' style='font-size: 0.75rem;'>";
+        for(var s = 1; s <= 5; s++) {
+            if (s <= ratingVal) {
+                starHtml += "<i class='fa-solid fa-star'></i>";
+            } else if (s - 0.5 <= ratingVal) {
+                starHtml += "<i class='fa-solid fa-star-half-stroke'></i>";
+            } else {
+                starHtml += "<i class='fa-regular fa-star'></i>";
+            }
+        }
+        var textCount = countVal > 0 ? "(" + ratingVal.toFixed(1) + ")" : "(4.0)";
+        starHtml += " <span class='text-muted ms-1' style='font-size: 0.65rem;'>" + textCount + "</span></div>";
+        // ------------------------------
+
+        // INI BARIS YANG TADI HILANG (Penting untuk memunculkan kotak)
+        htmlTemplate += "<div class='card-custom'><img src='" + foto + "' class='card-img-custom' loading='lazy'><div class='card-body-custom d-flex flex-column'>" + starHtml + "<div class='card-title-custom'>" + p.nama + "</div><div class='mt-auto pt-3 border-top'><div class='text-center mb-3'>" + hargaCoret + "<span class='text-primary fw-bold fs-5'>" + hargaTampil + "</span></div>" + actionHtml + "</div></div></div>";
+    }
+    container.innerHTML = htmlTemplate;
+}
 
     function cariProduk(val) {
         if(document.getElementById('view-public').classList.contains('active') === false) navTo('public'); 
