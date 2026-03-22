@@ -851,11 +851,15 @@ input, button, select, textarea {
             var hargaTampil = isOpsiSiswa ? "<small class='text-muted'>Mulai</small> Rp 300.000" : ("Rp " + Number(p.hAsli).toLocaleString('id-ID'));
             
             var foto = p.fotoUrl ? p.fotoUrl.replace('sz=w1000', 'sz=w400') : "https://via.placeholder.com/300";
-            var textTombolBeli = isOpsiSiswa ? "Pilih Siswa" : "Masukkan Keranjang";
+            // Teks tombol kita buat seragam menjadi Masukkan Keranjang
+var textTombolBeli = "Masukkan Keranjang"; 
 
-            var actionHtml = 
-                "<button class='btn btn-info text-white w-100 fw-bold py-2 mb-2 shadow-sm' onclick=\"bukaDetail('" + p.id + "')\"><i class='fa-solid fa-eye'></i> Lihat Produk</button>" +
-                "<button class='btn w-100 fw-bold text-white py-2 shadow-sm' style='background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none;' onclick=\"" + (isOpsiSiswa ? "bukaDetail('" + p.id + "')" : "addToCart('" + p.id + "')") + "\"><i class='fa-solid fa-cart-plus'></i> " + textTombolBeli + "</button>";
+// Jika opsiSiswa aktif, panggil fungsi popup baru, jika tidak langsung ke keranjang
+var onClickBeli = isOpsiSiswa ? "pilihSiswaPopup('" + p.id + "')" : "addToCart('" + p.id + "')";
+
+var actionHtml = 
+    "<button class='btn btn-info text-white w-100 fw-bold py-2 mb-2 shadow-sm' onclick=\"bukaDetail('" + p.id + "')\"><i class='fa-solid fa-eye'></i> Lihat Produk</button>" +
+    "<button class='btn w-100 fw-bold text-white py-2 shadow-sm' style='background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none;' onclick=\"" + onClickBeli + "\"><i class='fa-solid fa-cart-plus'></i> " + textTombolBeli + "</button>";
 
             htmlTemplate += "<div class='card-custom'><img src='" + foto + "' class='card-img-custom' loading='lazy'><div class='card-body-custom d-flex flex-column'><div class='card-title-custom'>" + p.nama + "</div><div class='mt-auto pt-3 border-top'><div class='text-center mb-3'>" + hargaCoret + "<span class='text-primary fw-bold fs-5'>" + hargaTampil + "</span></div>" + actionHtml + "</div></div></div>";
         }
@@ -895,7 +899,7 @@ input, button, select, textarea {
             divOpsi.classList.remove('d-none');
             document.getElementById('det-select-siswa').innerHTML = 
    "<option value=''>Pilih Jml Siswa...</option>" +
-   "<option value='250 Siswa|300000'>1-350 Siswa (300Rb)</option>" +
+   "<option value='350 Siswa|300000'>1-350 Siswa (300Rb)</option>" +
    "<option value='650 Siswa|550000'>351-650 Siswa (550Rb)</option>" +
    "<option value='950 Siswa|800000'>651-950 Siswa (800Rb)</option>" +
    "<option value='Unlimited Siswa|1000000'>951 Siswa ke atas (1Jt)</option>";
@@ -987,6 +991,65 @@ input, button, select, textarea {
         saveCart(); updateCartBadge();
         Swal.fire({ title: 'Sukses', text: 'Produk masuk keranjang', icon: 'success', timer: 1500, showConfirmButton: false });
     }
+
+    function pilihSiswaPopup(productId) {
+    // Cari data produk yang diklik
+    var p = null; 
+    for(var i=0; i<dbProducts.length; i++) { if(dbProducts[i].id === productId) p = dbProducts[i]; }
+    if(!p) return;
+
+    // Siapkan pilihan dropdown untuk di dalam popup
+    var optionsHtml = `
+        <select id="swal-select-siswa" class="form-select border-primary shadow-sm mt-3" style="font-size: 1rem;">
+            <option value="">Pilih Jml Siswa...</option>
+            <option value="350 Siswa|300000">1-350 Siswa (300Rb)</option>
+            <option value="650 Siswa|550000">351-650 Siswa (550Rb)</option>
+            <option value="950 Siswa|800000">651-950 Siswa (800Rb)</option>
+            <option value="Unlimited Siswa|1000000">951 Siswa ke atas (1Jt)</option>
+        </select>
+    `;
+
+    // Munculkan popup SweetAlert
+    Swal.fire({
+        title: 'Pilih Jumlah Siswa',
+        html: '<div class="text-start">Tentukan paket untuk <b>' + p.nama + '</b>:' + optionsHtml + '</div>',
+        showCancelButton: true,
+        confirmButtonText: '<i class="fa-solid fa-cart-plus"></i> Tambahkan',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#4f46e5',
+        preConfirm: () => {
+            var val = document.getElementById('swal-select-siswa').value;
+            if (!val) { Swal.showValidationMessage('Silakan pilih jumlah siswa terlebih dahulu!'); }
+            return val;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Jika user sudah memilih dan klik Tambahkan
+            var valSplit = result.value.split("|"); 
+            var namaVarian = valSplit[0]; 
+            var hargaVarian = parseInt(valSplit[1]);
+            var cartIdVariant = p.id + "-" + namaVarian; 
+
+            // Masukkan ke keranjang
+            var exist = false; 
+            for(var j=0; j<cart.length; j++) { 
+                if(cart[j].cartId === cartIdVariant) { cart[j].qty += 1; exist = true; } 
+            }
+            if(!exist) { 
+                var itemData = Object.assign({}, p); 
+                itemData.nama = p.nama + " (" + namaVarian + ")"; 
+                itemData.hAsli = hargaVarian; 
+                itemData.qty = 1; 
+                itemData.cartId = cartIdVariant; 
+                cart.push(itemData); 
+            }
+
+            saveCart(); 
+            updateCartBadge(); 
+            Swal.fire({ title: 'Sukses', text: 'Produk masuk keranjang', icon: 'success', timer: 1500, showConfirmButton: false });
+        }
+    });
+}
 
     function updateCartBadge() {
         var totalCount = 0; for(var k=0; k<cart.length; k++) totalCount += cart[k].qty;
