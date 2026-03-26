@@ -76,12 +76,130 @@ input, button, select, textarea {
         
         .section-title { text-align: center; margin: 50px 0 30px; font-size: 1.8rem; color: #1e1b4b; font-weight: 800; }
         .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; }
-        .card-custom { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s; display: flex; flex-direction: column; border: 1px solid rgba(0,0,0,0.05); }
-        .card-custom:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .card-img-custom { width: 100%; height: 160px; object-fit: contain; background-color: #f8fafc; padding: 10px; }
-        .card-body-custom { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; text-align: center; }
-        .card-title-custom { font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; color: #1e1b4b; line-height: 1.3; }
         
+        /* =========================================
+   DESAIN KARTU PRODUK MODERN
+========================================= */
+.card-custom {
+    background: #ffffff;
+    border-radius: 20px; /* Sudut lebih melengkung halus */
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 1px solid #f1f5f9;
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    cursor: pointer; /* Kursor berubah jadi jari saat diarahkan */
+}
+
+/* Efek saat disentuh (Hover) */
+.card-custom:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(79, 70, 229, 0.15);
+    border-color: #c7d2fe;
+}
+
+/* Area Gambar */
+.card-img-wrapper {
+    position: relative;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    padding: 20px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-img-custom {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s;
+}
+
+.card-custom:hover .card-img-custom {
+    transform: scale(1.08); /* Gambar sedikit membesar */
+}
+
+/* Pita Diskon */
+.promo-ribbon {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #ef4444;
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 8px;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(239, 68, 68, 0.3);
+}
+
+/* Area Teks */
+.card-body-custom {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    text-align: left; /* Rata kiri agar mudah dibaca */
+}
+
+.card-title-custom {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 5px;
+    line-height: 1.4;
+    /* Efek titik-titik jika teks terlalu panjang */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.price-wrapper {
+    margin-top: auto;
+    padding-top: 10px;
+    padding-right: 40px; /* Kasih ruang agar tidak menabrak tombol bulat */
+}
+
+/* Tombol Keranjang Bulat Melayang */
+.btn-add-cart-circle {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+    transition: transform 0.2s, background 0.3s;
+    z-index: 3;
+    font-size: 1.1rem;
+}
+
+.btn-add-cart-circle:hover {
+    transform: scale(1.15);
+    background: linear-gradient(135deg, #4338ca, #6d28d9);
+}
+
+/* Penyesuaian khusus untuk layar HP */
+@media screen and (max-width: 768px) {
+    .card-img-wrapper { height: 130px; padding: 10px; }
+    .card-body-custom { padding: 12px; }
+    .card-title-custom { font-size: 0.85rem; }
+    .price-wrapper { padding-right: 35px; }
+    .btn-add-cart-circle { width: 38px; height: 38px; bottom: 12px; right: 12px; font-size: 0.9rem;}
+}
+
+
         .spa-view { display: none; } .spa-view.active { display: block; animation: fadeIn 0.4s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -138,8 +256,6 @@ input, button, select, textarea {
             .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .card-custom { border-radius: 12px; border: 1px solid #e2e8f0; }
             .card-img-custom { height: 110px; padding: 5px; }
-            .card-body-custom { padding: 10px; }
-            .card-title-custom { font-size: 0.85rem; margin-bottom: 6px; height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
             
             /* --- TAMBAHAN BARU UNTUK KOTAK PRODUK --- */
 .card-body-custom .fs-5 { font-size: 0.9rem !important; } /* Mengecilkan harga */
@@ -924,13 +1040,13 @@ document.getElementById('footer-wa').innerHTML = htmlWA !== "" ? htmlWA : "-";
         });
     }
 
- function renderProduk(produkArray) {
+    function renderProduk(produkArray) {
     var container = document.getElementById('daftarProduk'); 
     if(!container) return;
     
     container.innerHTML = "";
     if (produkArray.length === 0) { 
-        container.innerHTML = "<p style='grid-column: 1/-1; text-align:center;'>Belum ada produk untuk ditampilkan.</p>"; 
+        container.innerHTML = "<p style='grid-column: 1/-1; text-align:center;' class='text-muted'><i class='fa-solid fa-box-open fa-2x mb-2'></i><br>Belum ada produk untuk ditampilkan.</p>"; 
         return; 
     }
     
@@ -938,37 +1054,48 @@ document.getElementById('footer-wa').innerHTML = htmlWA !== "" ? htmlWA : "-";
     for(var i=0; i<produkArray.length; i++) {
         var p = produkArray[i];
         var isOpsiSiswa = (p.opsiSiswa === true || p.opsiSiswa === 'true');
-        var hargaCoret = p.hCoret ? "<span class='text-decoration-line-through text-muted d-block' style='font-size:0.85rem;'>Rp " + Number(p.hCoret).toLocaleString('id-ID') + "</span>" : "";
-        var hargaTampil = isOpsiSiswa ? "<small class='text-muted'>Mulai</small> Rp 300.000" : ("Rp " + Number(p.hAsli).toLocaleString('id-ID'));
+        
+        // Atur format Harga & Diskon
+        var hargaCoret = p.hCoret ? `<span class='text-decoration-line-through text-muted d-block' style='font-size:0.75rem;'>Rp ${Number(p.hCoret).toLocaleString('id-ID')}</span>` : "";
+        var ribbon = p.hCoret ? `<div class='promo-ribbon'>Diskon</div>` : "";
+        var hargaTampil = isOpsiSiswa ? `<small class='text-muted' style='font-size:0.7rem;'>Mulai</small> Rp 300.000` : `Rp ${Number(p.hAsli).toLocaleString('id-ID')}`;
         
         var foto = p.fotoUrl ? p.fotoUrl.replace('sz=w1000', 'sz=w400') : "https://via.placeholder.com/300";
-        var textTombolBeli = "Masukkan Keranjang";
-        var onClickBeli = isOpsiSiswa ? "pilihSiswaPopup('" + p.id + "')" : "addToCart('" + p.id + "')";
+        
+        // PENTING: Gunakan event.stopPropagation() agar saat tombol keranjang diklik, kartu tidak ikut terbuka ke halaman detail
+        var onClickBeli = isOpsiSiswa ? `pilihSiswaPopup('${p.id}'); event.stopPropagation();` : `addToCart('${p.id}'); event.stopPropagation();`;
 
-        var actionHtml = 
-            "<button class='btn btn-info text-white w-100 fw-bold py-2 mb-2 shadow-sm' onclick=\"bukaDetail('" + p.id + "')\"><i class='fa-solid fa-eye'></i> Lihat Produk</button>" +
-            "<button class='btn w-100 fw-bold text-white py-2 shadow-sm' style='background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none;' onclick=\"" + onClickBeli + "\"><i class='fa-solid fa-cart-plus'></i> " + textTombolBeli + "</button>";
-
-        // --- LOGIKA BINTANG DINAMIS ---
+        // LOGIKA BINTANG
         var ratingVal = p.rating !== undefined ? parseFloat(p.rating) : 4.0; 
         var countVal = p.ulasanCount || 0;
-
-        var starHtml = "<div class='text-warning mb-1' style='font-size: 0.75rem;'>";
+        var starHtml = "<div class='text-warning mb-2' style='font-size: 0.7rem;'>";
         for(var s = 1; s <= 5; s++) {
-            if (s <= ratingVal) {
-                starHtml += "<i class='fa-solid fa-star'></i>";
-            } else if (s - 0.5 <= ratingVal) {
-                starHtml += "<i class='fa-solid fa-star-half-stroke'></i>";
-            } else {
-                starHtml += "<i class='fa-regular fa-star'></i>";
-            }
+            if (s <= ratingVal) starHtml += "<i class='fa-solid fa-star'></i>";
+            else if (s - 0.5 <= ratingVal) starHtml += "<i class='fa-solid fa-star-half-stroke'></i>";
+            else starHtml += "<i class='fa-regular fa-star'></i>";
         }
-        var textCount = countVal > 0 ? "(" + ratingVal.toFixed(1) + ")" : "(4.0)";
-        starHtml += " <span class='text-muted ms-1' style='font-size: 0.65rem;'>" + textCount + "</span></div>";
-        // ------------------------------
+        var textCount = countVal > 0 ? `(${ratingVal.toFixed(1)})` : `(4.0)`;
+        starHtml += ` <span class='text-muted ms-1' style='font-size: 0.65rem;'>${textCount}</span></div>`;
 
-        // INI BARIS YANG TADI HILANG (Penting untuk memunculkan kotak)
-        htmlTemplate += "<div class='card-custom'><img src='" + foto + "' class='card-img-custom' loading='lazy'><div class='card-body-custom d-flex flex-column'>" + starHtml + "<div class='card-title-custom'>" + p.nama + "</div><div class='mt-auto pt-3 border-top'><div class='text-center mb-3'>" + hargaCoret + "<span class='text-primary fw-bold fs-5'>" + hargaTampil + "</span></div>" + actionHtml + "</div></div></div>";
+        // KODE HTML KARTU (Perhatikan onclick di luar kartu, dan tombol melayang di bawah)
+        htmlTemplate += `
+        <div class='card-custom' onclick="bukaDetail('${p.id}')">
+            <div class='card-img-wrapper'>
+                ${ribbon}
+                <img src='${foto}' class='card-img-custom' loading='lazy'>
+            </div>
+            <div class='card-body-custom'>
+                ${starHtml}
+                <div class='card-title-custom'>${p.nama}</div>
+                <div class='price-wrapper'>
+                    ${hargaCoret}
+                    <span class='text-primary fw-bold' style='font-size: 1.1rem;'>${hargaTampil}</span>
+                </div>
+            </div>
+            <button class='btn-add-cart-circle' onclick="${onClickBeli}" title="Tambah ke Keranjang">
+                <i class='fa-solid fa-cart-plus'></i>
+            </button>
+        </div>`;
     }
     container.innerHTML = htmlTemplate;
 }
